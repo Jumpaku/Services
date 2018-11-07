@@ -1,0 +1,14 @@
+version: '3'
+
+services: 
+  nexus:
+    image: sonatype/nexus3
+    container_name: nexus
+    volumes: 
+      - './nexus-data:/nexus-data'
+    networks:
+      - reverse_proxy_network
+
+networks:
+  reverse_proxy_network:
+    external: true
