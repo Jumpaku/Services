@@ -1,0 +1,22 @@
+version: '3'
+
+services: 
+  reverse_proxy:
+    image: steveltn/https-portal:1
+    container_name: reverse_proxy
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./certs/:/var/lib/https-portal/
+    networks:
+      - reverse_proxy_network
+    # restart: always
+    environment:
+      DOMAINS: 'www.jumpaku.net -> http://www:80, nexus.jumpaku.net -> http://nexus:8081'
+      # STAGE: production
+      # FORCE_RENEW: 'true'
+
+networks:
+  reverse_proxy_network:
+    external: true
