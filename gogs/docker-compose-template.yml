@@ -1,0 +1,34 @@
+version: '3'
+services:
+  gogs:
+    image: gogs/gogs:latest
+    container_name: gogs
+    # restart: always
+    environment:
+      - "RUN_CROND=true"
+    depends_on:
+      - gogs_postgres
+    volumes:
+      - "./gogs/data:/data"
+    ports:
+      - "50122:22"
+    networks:
+      - reverse_proxy_network
+      - default
+    
+  gogs_postgres:
+    image: postgres:9.5
+    container_name: gogs_postgres
+    # restart: always
+    environment:
+      - "POSTGRES_USER=<your_db_user>"
+      - "POSTGRES_PASSWORD=<your_db_password>"
+      - "POSTGRES_DB=gogs"
+    volumes:
+      - "./gogs_postgres/data:/var/lib/postgresql/data"
+    networks:
+      - default
+
+networks:
+  reverse_proxy_network:
+    external: true
