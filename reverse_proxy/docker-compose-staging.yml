@@ -13,7 +13,7 @@ services:
       - reverse_proxy_network
     # restart: always
     environment:
-      DOMAINS: 'www.jumpaku.net -> http://www:80, nexus.jumpaku.net -> http://nexus:8081'
+      DOMAINS: 'www.jumpaku.net -> http://www:80, nexus.jumpaku.net -> http://nexus:8081, gogs.jumpaku.net -> http://gogs:3000'
       # STAGE: production
       # FORCE_RENEW: 'true'
 

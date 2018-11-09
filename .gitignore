@@ -2,3 +2,4 @@
 *.DS_Store
 
 reverse_proxy/docker-compose\.yml
+gogs/docker-compose\.yml
