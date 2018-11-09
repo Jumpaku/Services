@@ -10,8 +10,8 @@ services:
       - gogs_postgres
     volumes:
       - "./gogs/data:/data"
-    ports:
-      - "50122:22"
+    #ports:
+    #  - "50122:22"
     networks:
       - reverse_proxy_network
       - default
