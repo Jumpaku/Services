@@ -16,3 +16,9 @@ cat docker-compose-template.yml \
 ```sh
 mkdir gogs_postgres/data
 ```
+
+* Disable ssh
+
+```sh
+cp gogs/app.ini gogs/data/gogs/conf/app.ini
+```
