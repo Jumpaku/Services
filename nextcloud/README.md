@@ -2,7 +2,7 @@
 
 ## note
 
-* Set POSTGRESMYSQL_ROOT_PASSWORD_USER and MYSQL_PASSWORD.
+* Set MYSQL_ROOT_PASSWORD and MYSQL_PASSWORD.
 
 ```sh
 cat docker-compose-template.yml \
