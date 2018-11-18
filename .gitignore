@@ -3,3 +3,4 @@
 
 reverse_proxy/docker-compose\.yml
 gogs/docker-compose\.yml
+nextcloud/docker-compose\.yml
