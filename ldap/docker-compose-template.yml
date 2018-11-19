@@ -22,7 +22,8 @@ services:
       - ldap_network
       - reverse_proxy_network
     environment:
-      PHPLDAPADMIN_LDAP_HOSTS: openldap
+      - 'PHPLDAPADMIN_LDAP_HOSTS=openldap'
+      - 'PHPLDAPADMIN_HTTPS=false'
     depends_on:
       - openldap
 
