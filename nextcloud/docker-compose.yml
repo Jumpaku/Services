@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+
+  nextcloud:
+    image: nextcloud
+    container_name: nextcloud
+    depends_on:
+      - nextcloud_mariadb
+    volumes:
+      - ./nextcloud/html/:/var/www/html/
+    networks: 
+      - default
+      - reverse_proxy_network
+      - ldap_network
+    # restart: always
+    
+  nextcloud_mariadb:
+    image: mariadb
+    container_name: nextcloud_mariadb
+    volumes:
+      - ./nextcloud_mariadb/data/:/var/lib/mysql
+    networks:
+      - default
+    environment:
+      - "MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD?unset_value}"
+      - "MYSQL_DATABASE=nextcloud"
+      - "MYSQL_USER=admin"
+      - "MYSQL_PASSWORD=${MYSQL_PASSWORD?unset_value}"
+    # restart: always
+
+networks:
+  reverse_proxy_network:
+    external: true
+  ldap_network:
+    external: true
