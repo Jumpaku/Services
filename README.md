@@ -1,7 +1,16 @@
 # Services
 
-* reverse_proxy (https)
+
+## Applications
+
 * nextcloud
 * nexus
 * gogs
-* www
+
+## HTTPS reverse proxy
+
+* reverse_proxy
+
+## LDAP
+
+* openldap
