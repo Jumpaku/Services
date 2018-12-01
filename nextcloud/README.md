@@ -1,12 +1,9 @@
 # nextcloud
 
-## note
-
-* Set MYSQL_ROOT_PASSWORD and MYSQL_PASSWORD.
+## Start
 
 ```sh
-cat docker-compose-template.yml \
- | sed 's/MYSQL_ROOT_PASSWORD=.*$/MYSQL_ROOT_PASSWORD=<root password>/g' \
- | sed 's/MYSQL_PASSWORD=.*$/MYSQL_PASSWORD=<admin password>/g' \
- > docker-compose.yml
+export MYSQL_ROOT_PASSWORD=mysql_root_password
+export MYSQL_PASSWORD=mysql_password
+sudo docker-compose up -d
 ```
