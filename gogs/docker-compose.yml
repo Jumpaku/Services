@@ -1,5 +1,7 @@
 version: '3'
+
 services:
+
   gogs:
     image: gogs/gogs:latest
     container_name: gogs
@@ -10,19 +12,18 @@ services:
       - gogs_postgres
     volumes:
       - "./gogs/data:/data"
-    #ports:
-    #  - "50122:22"
     networks:
-      - reverse_proxy_network
       - default
+      - reverse_proxy_network
+      - ldap_network
     
   gogs_postgres:
     image: postgres:9.5
     container_name: gogs_postgres
     # restart: always
     environment:
-      - "POSTGRES_USER=<your_db_user>"
-      - "POSTGRES_PASSWORD=<your_db_password>"
+      - "POSTGRES_USER=gogs"
+      - "POSTGRES_PASSWORD=${GOGS_POSTGRES_PASSWORD}"
       - "POSTGRES_DB=gogs"
     volumes:
       - "./gogs_postgres/data:/var/lib/postgresql/data"
@@ -31,4 +32,6 @@ services:
 
 networks:
   reverse_proxy_network:
+    external: true
+  ldap_network:
     external: true
