@@ -8,7 +8,10 @@ services:
       - './nexus-data:/nexus-data'
     networks:
       - reverse_proxy_network
+      - ldap_network
 
 networks:
   reverse_proxy_network:
+    external: true
+  ldap_network:
     external: true
