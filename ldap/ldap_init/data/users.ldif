@@ -1,0 +1,11 @@
+# entry for 
+dn: ou=users,dc=jumpaku,dc=net
+objectClass: organizationalUnit
+ou: users
+
+dn: uid=jumpaku,ou=users,dc=jumpaku,dc=net
+objectClass: inetOrgPerson
+mail: jumpaku1089@gmail.com
+uid: jumpaku
+cn: jumpaku
+sn: jumpaku
