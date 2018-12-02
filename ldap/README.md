@@ -24,7 +24,7 @@ Edit `openldap/slapd.conf`, rebuild, and restart.
 Edit `ldap_init/data/users.ldif`.
 
 ```sh
-sudo -E docker-compose run ldap_init ash
+sudo -E docker-compose -f ./ldap/docker-compose.yml run ldap_init ash
 ```
 
 ```sh
