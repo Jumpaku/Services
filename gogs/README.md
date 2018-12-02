@@ -1,24 +1,12 @@
 # gogs
 
-## note
-
-* Set POSTGRES_USER and POSTGRES_PASSWORD.
+## Start
 
 ```sh
-cat docker-compose-template.yml \
- | sed 's/"POSTGRES_USER=.*".*$/"POSTGRES_USER=<user id>"/g' \
- | sed 's/"POSTGRES_PASSWORD=.*".*$/"POSTGRES_PASSWORD=<password>"/g' \
- > docker-compose.yml
+export GOGS_POSTGRES_PASSWORD=gogs_postgres_password
+sudo -E docker-compose up -d
 ```
 
-* Make db directopry postgres/data.
+## Configure
 
-```sh
-mkdir gogs_postgres/data
-```
-
-* Disable ssh
-
-```sh
-cp gogs/app.ini gogs/data/gogs/conf/app.ini
-```
+Edit `gogs/data/gogs/conf/app.ini`.
