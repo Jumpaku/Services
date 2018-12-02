@@ -10,18 +10,18 @@ services:
     volumes:
       - ./nextcloud/html/:/var/www/html/
     networks: 
-      - default
+      - inner_network
       - reverse_proxy_network
       - ldap_network
     # restart: always
-    
+
   nextcloud_mariadb:
     image: mariadb
     container_name: nextcloud_mariadb
     volumes:
       - ./nextcloud_mariadb/data/:/var/lib/mysql
     networks:
-      - default
+      - inner_network
     environment:
       - "MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}"
       - "MYSQL_DATABASE=nextcloud"
@@ -34,3 +34,4 @@ networks:
     external: true
   ldap_network:
     external: true
+  inner_network:
