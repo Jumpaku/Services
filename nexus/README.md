@@ -3,8 +3,8 @@
 ## Start
 
 ```sh
-mkdir -p ./nexus-data/
-chown -R 200:200 ./nexus-data/
+mkdir -p nexus/nexus-data/
+chown -R 200:200 nexus/nexus-data/
 sudo docker-compose -f nexus/docker-compose.yml up -d
 ```
 
