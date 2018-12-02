@@ -10,22 +10,21 @@ sudo docker network create ldap_network
 
 ```sh
 export LDAP_ROOT_PW=secret_password
-sudo docker-compose build
-sudo docker-compose up -d
+sudo -E docker-compose up -d
 ```
 
 ## Configure
 
 ### slapd
 
-Edit `openldap/slapd.conf` and restart.
+Edit `openldap/slapd.conf`, rebuild, and restart.
 
 ### Users
 
 Edit `ldap_init/data/users.ldif`.
 
 ```sh
-sudo docker-compose run ldap_init ash
+sudo -E docker-compose run ldap_init ash
 ```
 
 ```sh
