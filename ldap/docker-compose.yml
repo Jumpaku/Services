@@ -8,7 +8,6 @@ services:
       dockerfile: Dockerfile-openldap
     container_name: openldap
     networks: 
-      - default
       - ldap_network
     environment:
       - "LDAP_ROOT_PW=${LDAP_ROOT_PW}"
@@ -23,10 +22,12 @@ services:
     environment: 
       - "LDAP_ROOT_PW=${LDAP_ROOT_PW}"
     networks: 
-      - default
+      - ldap_network
     volumes:
       - "./ldap_init/data/:/home/data/"
 
 networks:
   ldap_network:
     external: true
+
+
