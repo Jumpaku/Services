@@ -10,7 +10,7 @@ sudo docker network create ldap_network
 
 ```sh
 export LDAP_ROOT_PW=secret_password
-sudo -E docker-compose -f ./ldap/docker-compose.yml up --build -d
+sudo -E docker-compose -f ldap/docker-compose.yml up --build -d
 ```
 
 ## Configure
@@ -24,7 +24,7 @@ Edit `openldap/slapd.conf`, rebuild, and restart.
 Edit `ldap_init/data/users.ldif`.
 
 ```sh
-sudo -E docker-compose -f ./ldap/docker-compose.yml run ldap_init ash
+sudo -E docker-compose -f ldap/docker-compose.yml run ldap_init ash
 ```
 
 ```sh
@@ -35,7 +35,7 @@ ldappasswd -x -h openldap -D "cn=admin,dc=jumpaku,dc=net" -w secret_password -s 
 ## Test
 
 ```sh
-sudo -E docker-compose -f ./ldap/docker-compose.yml run ldap_init ash
+sudo -E docker-compose -f ldap/docker-compose.yml run ldap_init ash
 ```
 
 ```sh
