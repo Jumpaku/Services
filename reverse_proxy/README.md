@@ -14,7 +14,7 @@ All serveces proxied are stared.
 
 ```sh
 export REVERSE_PROXY_STAGE=staging
-sudo docker-compose up -d
+sudo -E docker-compose up -d
 curl -k https://test.jumpaku.net
 ```
 
@@ -23,7 +23,7 @@ curl -k https://test.jumpaku.net
 ```sh
 export REVERSE_PROXY_DOMAINS='test.jumpaku.net -> http://reverse_proxy_test:80'
 export REVERSE_PROXY_STAGE='local'
-sudo docker-compose up -d
+sudo -E docker-compose up -d
 curl -k -H 'Host: test.jumpaku.net' https://localhost
 ```
 
@@ -31,5 +31,5 @@ curl -k -H 'Host: test.jumpaku.net' https://localhost
 
 ```sh
 export REVERSE_PROXY_STAGE=production
-sudo docker-compose up -d
+sudo -E docker-compose up -d
 ```

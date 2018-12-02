@@ -23,10 +23,10 @@ services:
     networks:
       - default
     environment:
-      - "MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD?unset_value}"
+      - "MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}"
       - "MYSQL_DATABASE=nextcloud"
       - "MYSQL_USER=admin"
-      - "MYSQL_PASSWORD=${MYSQL_PASSWORD?unset_value}"
+      - "MYSQL_PASSWORD=${MYSQL_PASSWORD}"
     # restart: always
 
 networks:

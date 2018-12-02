@@ -4,7 +4,7 @@
 
 ```sh
 export GOGS_POSTGRES_PASSWORD=gogs_postgres_password
-sudo docker-compose up -d
+sudo -E docker-compose up -d
 ```
 
 ## Configure

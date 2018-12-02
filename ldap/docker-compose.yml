@@ -11,7 +11,7 @@ services:
       - default
       - ldap_network
     environment:
-      - "LDAP_ROOT_PW=${LDAP_ROOT_PW?unset_value}"
+      - "LDAP_ROOT_PW=${LDAP_ROOT_PW}"
 
   ldap_init:
     build:
@@ -21,7 +21,7 @@ services:
     depends_on: 
       - openldap
     environment: 
-      - "LDAP_ROOT_PW=${LDAP_ROOT_PW?unset_value}"
+      - "LDAP_ROOT_PW=${LDAP_ROOT_PW}"
     networks: 
       - default
     volumes:
