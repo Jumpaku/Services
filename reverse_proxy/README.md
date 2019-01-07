@@ -32,9 +32,8 @@ curl -k -H 'Host: test.jumpaku.net' https://localhost
 ## Start
 
 ```sh
-cd reverse_proxy
 export REVERSE_PROXY_STAGE=production
-sudo -E docker-compose up -d
+sudo -E docker-compose -f reverse_proxy/docker-compose.yml up -d
 ```
 
 ## References
