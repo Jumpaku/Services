@@ -6,6 +6,7 @@
 * nextcloud
 * nexus
 * gogs
+* jumpaku-othello
 
 ## HTTPS reverse proxy
 
@@ -13,4 +14,4 @@
 
 ## LDAP
 
-* openldap
+* ldap
