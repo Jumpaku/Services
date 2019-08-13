@@ -1,0 +1,22 @@
+version: '3'
+
+services: 
+  dovecot:
+    build: './dovecot/'
+    container_name: 'dovecot'
+  postfix:
+    build: './postfix/'
+    container_name: 'postfix'
+  rainloop:
+    image: 'hardware/rainloop'
+    container_name: 'rainloop'
+    volumes:
+      - './rainloop/data/:/rainloop/data'
+    networks: 
+      - 'reverse_proxy_network'
+
+networks:
+  reverse_proxy_network:
+    external: true
+  ldap_network:
+    external: true
