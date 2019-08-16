@@ -25,6 +25,12 @@ services:
       - './rainloop/data/:/rainloop/data'
     networks: 
       - 'reverse_proxy_network'
+  
+  mail_test:
+    build: './mail_test'
+    container_name: 'mail_test'
+    networks: 
+      - 'ldap_network'
 
 networks:
   reverse_proxy_network:
