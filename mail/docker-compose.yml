@@ -5,7 +5,7 @@ services:
     build: './dovecot/'
     container_name: 'dovecot'
     volumes: 
-      - './dovecot/:/data/'
+      - './dovecot/data/:/data/'
     networks: 
       - 'ldap_network'
 
@@ -13,10 +13,9 @@ services:
     build: './postfix/'
     container_name: 'postfix'
     volumes: 
-      - './postfix/:/data/'
+      - './postfix/data/:/data/'
     networks: 
       - 'ldap_network'
-    command: ["/data/start.sh"]
     
   rainloop:
     image: 'hardware/rainloop'
