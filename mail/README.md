@@ -128,7 +128,7 @@ QUIT
 ```
 
 ```sh
-openssl s_client -connect postfix:587 -starttls smtp
+openssl s_client -connect postfix:587 -starttls smtp -ign_eof -crlf
 # 220 localhost ESMTP Postfix
 EHLO postfix
 # 250-localhost
@@ -148,7 +148,7 @@ QUIT
 ```
 
 ```sh
-openssl s_client postfix:465 -ign_eof -crlf
+openssl s_client -connect postfix:465 -ign_eof -crlf
 # 220 localhost ESMTP Postfix
 EHLO postfix
 # 250-localhost
@@ -183,7 +183,7 @@ e LOGOUT
 ```
 
 ```sh
-openssl s_client dovecot:993
+openssl s_client -connect dovecot:993
 a LOGIN jumpaku user_password
 b LIST "" *
 c SELECT INBOX
