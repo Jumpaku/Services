@@ -1,16 +1,22 @@
 # Services
 
-
 ## Applications
 
 * nextcloud
 * nexus
 * gogs
+* othello
+* rainloop
 
 ## HTTPS reverse proxy
 
 * reverse_proxy
 
-## LDAP
+## Internal LDAP
 
 * openldap
+
+## Mail server
+
+* postfix
+* dovecot
