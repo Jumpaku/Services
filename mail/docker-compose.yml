@@ -1,0 +1,57 @@
+version: '3'
+
+services: 
+
+  postfix:
+    container_name: 'postfix'
+    build: './postfix'
+    networks: 
+      - 'ldap_network'
+    environment: 
+      - 'LDAP_HOSTS=openldap'
+      - 'LDAP_BASE=ou=users,dc=jumpaku,dc=net'
+      - 'LDAP_USER_FIELD=uid'
+      - 'DOMAIN=jumpaku.net'
+      - 'HOSTNAME=mail.jumpaku.net'
+      - 'LMTP_TRANSPORT=lmtp:inet:dovecot:24'
+      - 'DKIM_SELECTOR=default'
+      - 'DKIM_KEY_PATH=/etc/dkimkeys/default.private'
+      #- 'SSL_KEY_PATH=/etc/ssl/localcerts/domain.key'
+      #- 'SSL_CERT_PATH=/etc/ssl/localcerts/signed.crt'
+    volumes: 
+      - './postfix/dkimkeys/:/etc/dkimkeys/'
+      #- '../reverse_proxy/certs/mail.jumpaku.net/production/:/etc/ssl/localcerts/:ro'
+
+  dovecot:
+    container_name: 'dovecot'
+    build: './dovecot'
+    networks: 
+      - 'ldap_network'
+    environment: 
+      - 'LDAP_HOSTS=openldap'
+      - 'LDAP_BASE=ou=users,dc=jumpaku,dc=net'
+      - 'LDAP_USER_FIELD=uid'
+      #- 'SSL_KEY_PATH=/etc/ssl/localcerts/domain.key'
+      #- 'SSL_CERT_PATH=/etc/ssl/localcerts/signed.crt'
+    #volumes: 
+      #- '../reverse_proxy/certs/mail.jumpaku.net/production/:/etc/ssl/localcerts/:ro'
+    
+  rainloop:
+    image: 'hardware/rainloop'
+    container_name: 'rainloop'
+    volumes:
+      - './rainloop/data/:/rainloop/data'
+    networks: 
+      - 'reverse_proxy_network'
+  
+  mail_test:
+    build: './mail_test'
+    container_name: 'mail_test'
+    networks: 
+      - 'ldap_network'
+
+networks:
+  reverse_proxy_network:
+    external: true
+  ldap_network:
+    external: true
