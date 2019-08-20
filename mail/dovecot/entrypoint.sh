@@ -31,9 +31,6 @@ if [ -n "$LDAP_USER_FIELD" ]; then
 	setDovecotConf "pass_attrs" "$LDAP_USER_FIELD=user" /etc/dovecot/dovecot-ldap.conf.ext
 fi
 
-# Configure mailbox
-chmod +w /var/mail/
-
 # Set SSL resource paths
 if [ -n "$SSL_KEY_PATH" ]; then
 	setDovecotConf "ssl_key" "<$SSL_KEY_PATH" /etc/dovecot/conf.d/10-ssl.conf
