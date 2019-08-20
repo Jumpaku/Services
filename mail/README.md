@@ -136,9 +136,9 @@ printf "testuser\0testuser\0user_password" | base64
 ```
 
 ```sh
-telnet postfix:25
-openssl s_client -connect postfix:587 -starttls smtp -ign_eof -crlf
-openssl s_client -connect postfix:465 -ign_eof -crlf
+telnet smtps.jumpaku.net:25
+openssl s_client -connect smtps.jumpaku.net:587 -starttls smtp -ign_eof -crlf
+openssl s_client -connect smtps.jumpaku.net:465 -ign_eof -crlf
 ```
 
 ```sh
@@ -164,8 +164,8 @@ QUIT
 ### IMAP and IMAPS
 
 ```sh
-telnet dovecot 143
-openssl s_client -connect dovecot:993
+telnet imaps.jumpaku.net:143
+openssl s_client -connect imaps.jumpaku.net:993
 ```
 
 ```sh

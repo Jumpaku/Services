@@ -9,12 +9,10 @@
 
 ## iptables
 
-1. Change /etc/iptables/iptables.rules
-2. `sudo reboot`
-
 ```sh
 cp ./iptables.rules /etc/iptables/iptables.rules
 sudo iptables-restore -n < /etc/iptables/iptables.rules
+sudo iptables -L
 ```
 
 ## ssh
