@@ -22,7 +22,7 @@ services:
       - './postfix/dkimkeys/:/etc/dkimkeys/'
       - '../reverse_proxy/certs/smtps.jumpaku.net/production/:/etc/ssl/localcerts/:ro'
     ports: 
-      #- '25:25'
+      - '25:25'
       - '587:587'
       - '465:465'
 
