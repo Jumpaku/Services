@@ -1,21 +1,29 @@
-FROM alpine:3.10
+FROM debian:buster-slim
 
-RUN apk --update add postfix postfix-ldap busybox-extras openssl
+ENV DEBIAN_FRONTEND noninteractive
 
+RUN mkdir -p /var/spool/postfix \
+&& mkdir -p /etc/ssl/localcerts \
+&& mkdir -p /etc/postfix
 
-RUN mkdir -p /etc/ssl/localcerts/
-RUN openssl genrsa \
-    -out /etc/ssl/localcerts/mail.key.pem
-RUN openssl req -new \
-    -key /etc/ssl/localcerts/mail.key.pem \
-    -out /etc/ssl/localcerts/mail.csr.pem \
-    -subj "/CN=smtp"
-RUN openssl x509 -req -days 3650 \
-    -in /etc/ssl/localcerts/mail.csr.pem \
-    -signkey /etc/ssl/localcerts/mail.key.pem \
-    -out /etc/ssl/localcerts/mail.cert.pem
+RUN apt-get update && apt-get install -y \
+	openssl \
+	rsyslog \
+	postfix \
+	postfix-ldap \
+	opendkim \
+	opendkim-tools \
+	sasl2-bin \
+	libsasl2-modules-ldap \
+&& rm -rf /var/lib/apt/lists/*
 
-COPY ./data/main.cf /etc/postfix/
-COPY ./data/master.cf /etc/postfix/
+RUN adduser postfix sasl
+RUN ln -s /etc/postfix/saslauthd.conf /etc/saslauthd.conf
 
-CMD [ "postfix", "start-fg" ]
+COPY ./data/postfix/ /etc/postfix/
+COPY ./data/saslauthd /etc/default/
+COPY ./data/opendkim/ /etc/opendkim/
+COPY ./data/opendkim.conf /etc/opendkim.conf
+
+COPY entrypoint.sh /entrypoint.sh
+CMD ["/entrypoint.sh"]

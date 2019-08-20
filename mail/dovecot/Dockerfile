@@ -1,13 +1,21 @@
-FROM alpine:3.10
+FROM debian:buster-slim
 
-RUN apk --update add dovecot dovecot-ldap dovecot-lmtpd busybox-extras
+ENV DEBIAN_FRONTEND noninteractive
 
-COPY ./data/conf.d/10-auth.conf /etc/dovecot/conf.d/
-COPY ./data/conf.d/10-ssl.conf /etc/dovecot/conf.d/
-COPY ./data/conf.d/10-mail.conf /etc/dovecot/conf.d/
-COPY ./data/conf.d/10-master.conf /etc/dovecot/conf.d/
-COPY ./data/dovecot-ldap.conf.ext /etc/dovecot/
+RUN mkdir -p /var/mail \
+&& mkdir -p /etc/ssl/localcerts \
+&& mkdir -p /etc/dovecot
 
-RUN mkdir -p /var/vmail/jumpaku/mail
+RUN apt-get update && apt-get install -y \
+	openssl \
+	dovecot-imapd \
+	dovecot-lmtpd \
+	dovecot-ldap \
+	dovecot-sieve \
+	dovecot-managesieved \
+&& rm -rf /var/lib/apt/lists/*
 
-CMD [ "dovecot", "-F" ]
+COPY ./data/ /etc/dovecot/
+
+COPY entrypoint.sh /entrypoint.sh
+CMD ["/entrypoint.sh"]

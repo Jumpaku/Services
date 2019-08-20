@@ -1,5 +1,28 @@
 # Mail
 
+### MX
+
+```
+mail.jumpaku.net.
+```
+
+### SPF
+
+```
+"v=spf1 a mx -all"
+```
+
+### DKIM
+
+```sh
+docker-compose exec postfix cat /etc/dkimkeys/default.private.txt
+```
+
+```
+default._domainkey      IN      TXT     ( "v=DKIM1; h=sha256; k=rsa; "
+          "p=MIIBIjANBgkq ... zwN3sQIDAQAB" )  ; ----- DKIM key default for jumpaku.net
+```
+
 ## Postfix
 
 ```ini
@@ -26,6 +49,10 @@ virtual_transport = lmtp:inet:dovecot:24
 virtual_mailbox_domains = localhost
 virtual_mailbox_base = /var/mail
 virtual_mailbox_maps = ldap:/etc/postfix/ldapvirtual
+
+# DKIM
+smtpd_milters = inet:localhost:12301
+non_smtpd_milters = inet:localhost:12301
 ```
 
 ### /etc/postfix/master.cf
@@ -104,8 +131,8 @@ docker-compose run mail_test ash
 ### SMTP, SMTPS and Submission
 
 ```sh
-printf "jumpaku\0jumpaku\0user_password" | base64
-# anVtcGFrdQBqdW1wYWt1AHVzZXJfcGFzc3dvcmQ=
+printf "testuser\0testuser\0user_password" | base64
+# dGVzdHVzZXIAdGVzdHVzZXIAdXNlcl9wYXNzd29yZA==
 ```
 
 
@@ -115,9 +142,9 @@ telnet postfix:25
 EHLO postfix
 # 250-localhost
 # ...
-MAIL FROM:jumpaku@postfix
+MAIL FROM:jumpaku@jumpaku.net
 # 250 2.1.0 Ok
-RCPT TO:jumpaku@postfix
+RCPT TO:jumpaku@jumpaku.net
 DATA
 From: jumpaku@jumpaku.net
 Subject: Mail Test
@@ -133,11 +160,11 @@ openssl s_client -connect postfix:587 -starttls smtp -ign_eof -crlf
 EHLO postfix
 # 250-localhost
 # ...
-AUTH PLAIN anVtcGFrdQBqdW1wYWt1AHVzZXJfcGFzc3dvcmQ=
+AUTH PLAIN dGVzdHVzZXIAdGVzdHVzZXIAdXNlcl9wYXNzd29yZA==
 # 235 2.7.0 Authentication successful
-MAIL FROM:<%%送信元アドレス%%>
+MAIL FROM:<testuser@jumpaku.net>
 # 250 2.1.0 Ok
-RCPT TO:<%%宛先%%>
+RCPT TO:<testuser@jumpaku.net>
 DATA
 From: jumpaku@jumpaku.net
 Subject: Mail Test
@@ -153,11 +180,11 @@ openssl s_client -connect postfix:465 -ign_eof -crlf
 EHLO postfix
 # 250-localhost
 # ...
-AUTH PLAIN anVtcGFrdQBqdW1wYWt1AHVzZXJfcGFzc3dvcmQ=
+AUTH PLAIN dGVzdHVzZXIAdGVzdHVzZXIAdXNlcl9wYXNzd29yZA==
 # 235 2.7.0 Authentication successful
-MAIL FROM:<jumpaku@jumpaku.net>
+MAIL FROM:<testuser@jumpaku.net>
 # 250 2.1.0 Ok
-RCPT TO:<jumpaku@localhost>
+RCPT TO:<testuser@jumpaku.net>
 # 250 2.1.5 Ok
 DATA
 From:jumpaku@localhost
@@ -165,17 +192,18 @@ To:jumpaku@localhost
 Subject: Mail Test
 
 Body of test mail
+
 .
 # 250 2.0.0 Ok: queued as ...
 QUIT
-# closed
+# 221 2.0.0 Bye
 ```
 
 ### IMAP and IMAPS
 
 ```sh
 telnet dovecot 143
-a LOGIN jumpaku user_password
+a LOGIN testuser user_password
 b LIST "" *
 c SELECT INBOX
 d FETCH 1 body[]
@@ -184,9 +212,12 @@ e LOGOUT
 
 ```sh
 openssl s_client -connect dovecot:993
-a LOGIN jumpaku user_password
+# * OK...
+a LOGIN testuser user_password
+# a OK ... Logged in
 b LIST "" *
 c SELECT INBOX
-d FETCH 1 body[]
 e LOGOUT
+# * BYE Logging out
+# e OK Logout completed ...
 ```
