@@ -93,30 +93,30 @@ fi
 # Generate SSL certification
 #########################################
 
-CERT_FOLDER="/etc/ssl/localcerts"
-CSR_PATH="/tmp/smtp.csr.pem"
+#CERT_FOLDER="/etc/ssl/localcerts"
+#CSR_PATH="/tmp/smtp.csr.pem"
 
 if [ -n "$SSL_KEY_PATH" ]; then
     KEY_PATH=$SSL_KEY_PATH
 else
-    KEY_PATH="$CERT_FOLDER/smtp.key.pem"
+    echo "SSL_KEY_PATH Required"
 fi
 
 if [ -n "$SSL_CERT_PATH" ]; then
     CERT_PATH=$SSL_CERT_PATH
 else
-    CERT_PATH="$CERT_FOLDER/smtp.cert.pem"
+    echo "SSL_CERT_PATH Required"
 fi
 
 # Generate self signed certificate
-if [ ! -f $CERT_PATH ] || [ ! -f $KEY_PATH ]; then
-    mkdir -p $CERT_FOLDER
-    echo "SSL Key or certificate not found. Generating self-signed certificates"
-    openssl genrsa -out $KEY_PATH
-    openssl req -new -key $KEY_PATH -out $CSR_PATH \
-    -subj "/CN=smtp"
-    openssl x509 -req -days 3650 -in $CSR_PATH -signkey $KEY_PATH -out $CERT_PATH
-fi
+#if [ ! -f $CERT_PATH ] || [ ! -f $KEY_PATH ]; then
+#    mkdir -p $CERT_FOLDER
+#    echo "SSL Key or certificate not found. Generating self-signed certificates"
+#    openssl genrsa -out $KEY_PATH
+#    openssl req -new -key $KEY_PATH -out $CSR_PATH \
+#    -subj "/CN=smtp"
+#    openssl x509 -req -days 3650 -in $CSR_PATH -signkey $KEY_PATH -out $CERT_PATH
+#fi
 
 
 #############################################
