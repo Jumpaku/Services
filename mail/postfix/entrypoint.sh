@@ -5,7 +5,7 @@ function ConfigureColon {
     VALUE="$2"
     FILE="$3"
     MESSAGE="$4"
-    sed -i "s#^\s*$KEY\s*:.*\$#$KEY=$VALUE#g" $FILE
+    sed -i "s#^\s*$KEY\s*:.*\$#$KEY: $VALUE#g" $FILE
     echo "$MESSAGE"
 }
 
