@@ -28,7 +28,7 @@ DOVECOT_SIEVE_CONF=/etc/dovecot/conf.d/90-sieve.conf
 INBOX_PATH="/var/mail/%n" # %n: user part in user@domain
 echo "Configure: $DOVECOT_MAIL_CONF, $DOVECOT_SIEVE_CONF"
 Configure "mail_location" "maildir:$INBOX_PATH" "$DOVECOT_MAIL_CONF" "Set mail_location=maildir:$INBOX_PATH, INBOX_PATH: Required"
-Configure "sieve_dir" "$INBOX_PATH.sieve" "$DOVECOT_SIEVE_CONF" "Set sieve_dir=<$INBOX_PATH.sieve"
+Configure "sieve_dir" "$INBOX_PATH.sieve" "$DOVECOT_SIEVE_CONF" "Set sieve_dir=$INBOX_PATH.sieve"
 Configure "sieve" "$INBOX_PATH.sieve/sieve" "$DOVECOT_SIEVE_CONF" "Set sieve=$INBOX_PATH.sieve/sieve"
 
 
