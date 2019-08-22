@@ -1,123 +1,62 @@
 #!/bin/bash
 
-#########################################
-# Setup conf
-#########################################
+function ConfigureColon {
+    KEY="$1"
+    VALUE="$2"
+    FILE="$3"
+    MESSAGE="$4"
+    sed -i "s#^\s*$KEY\s*:.*\$#$KEY=$VALUE#g" $FILE
+    echo "$MESSAGE"
+}
 
-# Set LDAP conf: ldap_servers (ex: ldap://ldap)
-if [ -n "$LDAP_HOSTS" ]; then
-	sed -i "s|^ldap_servers\s*:.*$|ldap_servers: ldap://$LDAP_HOSTS|" /etc/postfix/saslauthd.conf
-else
-	echo "LDAP_HOSTS Required"
-fi
+SASLAUTHD_CONF=/etc/postfix/saslauthd.conf
+echo "Configure: $SASLAUTHD_CONF"
+ConfigureColon "ldap_servers" "ldap://$LDAP_HOSTS" "$SASLAUTHD_CONF" "Set hosts=ldap://$LDAP_HOSTS, LDAP_HOSTS: Required"
+ConfigureColon "ldap_search_base" "$LDAP_BASE" "$SASLAUTHD_CONF" "Set ldap_search_base: $LDAP_BASE, LDAP_BASE: Required"
+ConfigureColon "ldap_filter" "(uid=%u)" "$SASLAUTHD_CONF" "Set ldap_filter: (uid=%u)"
 
-# Set LDAP conf: ldap_search_base (ex: base=dc=mail, dc=example, dc=org)
-if [ -n "$LDAP_BASE" ]; then
-	sed -i "s/^ldap_search_base\s*:.*$/ldap_search_base: $LDAP_BASE/" /etc/postfix/saslauthd.conf
-else
-	echo "LDAP_BASE Required"
-fi
+function ConfigureEq {
+    KEY="$1"
+    VALUE="$2"
+    FILE="$3"
+    MESSAGE="$4"
+    sed -i "s#^\s*$KEY\s*=.*\$#$KEY=$VALUE#g" $FILE
+    echo "$MESSAGE"
+}
 
-# Set LDAP conf: ldap_filter (ex: uid=%u)
-if [ -n "$LDAP_USER_FIELD" ]; then
-	sed -i "s/^ldap_filter\s*:.*$/ldap_filter: $LDAP_USER_FIELD=%u/" /etc/postfix/saslauthd.conf
-else
-	echo "LDAP_USER_FIELD Required"
-fi
+POSTFIX_MAIN_CF=/etc/postfix/main.cf
+echo "Configure: $POSTFIX_MAIN_CF"
+ConfigureEq "virtual_mailbox_domains" "$DOMAIN" "$POSTFIX_MAIN_CF" "Set virtual_mailbox_domains=$DOMAIN, DOMAIN Required"
+ConfigureEq "myhostname" "$HOSTNAME" "$POSTFIX_MAIN_CF" "Set myhostname=$HOSTNAME, HOSTNAME Required"
+LMTP_TRANSPORT="lmtp:inet:$LMTP_HOST:24"
+ConfigureEq "virtual_transport" "$LMTP_TRANSPORT" "$POSTFIX_MAIN_CF" "Set virtual_transport=$LMTP_TRANSPORT, LMTP_HOST Required"
+ConfigureEq "smtpd_tls_key_file" "$SSL_KEY_PATH" "$POSTFIX_MAIN_CF" "Set smtpd_tls_key_file=$SSL_KEY_PATH, SSL_KEY_PATH Required"
+ConfigureEq "smtpd_tls_cert_file" "$SSL_CERT_PATH" "$POSTFIX_MAIN_CF" "Set smtpd_tls_cert_file=$SSL_CERT_PATH, SSL_CERT_PATH Required"
 
-# Set Postfix conf: virtual_mailbox_domains (ex: example.org)
-if [ -n "$DOMAIN" ]; then
-	sed -i "s/^virtual_mailbox_domains\s*=.*$/virtual_mailbox_domains = $DOMAIN/" /etc/postfix/main.cf
-else
-	echo "DOMAIN Required"
-fi
+function ConfigureWS {
+    KEY="$1"
+    VALUE="$2"
+    FILE="$3"
+    MESSAGE="$4"
+    sed -i "s#^\s*$KEY\s*.*\$#$KEY $VALUE#g" $FILE
+    echo "$MESSAGE"
+}
 
-# Set Postfix conf: hostname (ex: smtp.example.org)
-if [ -n "$HOSTNAME" ]; then
-	sed -i "s/^myhostname\s*=.*$/myhostname = $HOSTNAME/" /etc/postfix/main.cf
-else
-	echo "HOSTNAME Required"
-fi
+OPENDKIM_CONF=/etc/opendkim.conf
+echo "Configure: $OPENDKIM_CONF"
+ConfigureWS "Domain" "$DOMAIN" "$OPENDKIM_CONF" "Set Domain $DOMAIN"
+ConfigureWS "Selector" "$DKIM_SELECTOR" "$OPENDKIM_CONF" "Set Selector $DKIM_SELECTOR, DKIM_SELECTOR: Required"
+ConfigureWS "KeyFile" "$DKIM_KEY_PATH" "$OPENDKIM_CONF" "Set KeyFile $DKIM_KEY_PATH, DKIM_KEY_PATH: Required"
 
-# Set Postfix conf: virtual_transport (ex: lmtp:inet:dovecot:24)
-if [ -n "$LMTP_TRANSPORT" ]; then
-	sed -i "s/^virtual_transport\s*=.*$/virtual_transport = $LMTP_TRANSPORT/" /etc/postfix/main.cf
-else
-	echo "LMTP_TRANSPORT Required"
-fi
-
-# Set Postfix conf: smtpd_tls_key_file (ex: /etc/ssl/localcerts/smtp.key.pem)
-if [ -n "$SSL_KEY_PATH" ]; then
-	sed -i "s#^smtpd_tls_key_file\s*=.*\$#smtpd_tls_key_file = $SSL_KEY_PATH#" /etc/postfix/main.cf
-else
-	echo "SSL_KEY_PATH Required"
-fi
-
-# Set Postfix conf: smtpd_tls_key_file (ex: /etc/ssl/localcerts/smtp.cert.pem)
-if [ -n "$SSL_CERT_PATH" ]; then
-	sed -i "s#^smtpd_tls_cert_file\s*=.*\$#smtpd_tls_cert_file = $SSL_CERT_PATH#" /etc/postfix/main.cf
-else
-	echo "SSL_CERT_PATH Required"
-fi
-
-
-# Configure DKIM
-if [ -n "$DOMAIN" ]; then
-	sed -i "s/^Domain\s.*$/Domain $DOMAIN/" /etc/opendkim.conf
-else
-	echo "DOMAIN Required"
-fi
-
-if [ -n "$DKIM_SELECTOR" ]; then
-	sed -i "s/^Selector\s.*$/Selector $DKIM_SELECTOR/" /etc/opendkim.conf
-else
-	echo "DKIM_SELECTOR Required"
-fi
-
-if [ -n "$DKIM_KEY_PATH" ]; then
-	sed -i "s|^KeyFile\s.*$|KeyFile $DKIM_KEY_PATH|" /etc/opendkim.conf
-else
-	echo "DKIM_KEY_PATH Required"
-fi
-
-# Generate a DKIM key if there is no DKIM key file
+echo "Generate DKIM key of $DKIM_SELECTOR if there is no DKIM key in $DKIM_KEY_PATH"
 if [ ! -f $DKIM_KEY_PATH ]; then
 	opendkim-genkey -d $DOMAIN -b 2048 -s $DKIM_SELECTOR
 	mv $DKIM_SELECTOR.private $DKIM_KEY_PATH
 	chmod 400 $DKIM_KEY_PATH
 	mv $DKIM_SELECTOR.txt $DKIM_KEY_PATH.txt
 fi
-
-
-#########################################
-# Generate SSL certification
-#########################################
-
-#CERT_FOLDER="/etc/ssl/localcerts"
-#CSR_PATH="/tmp/smtp.csr.pem"
-
-if [ -n "$SSL_KEY_PATH" ]; then
-    KEY_PATH=$SSL_KEY_PATH
-else
-    echo "SSL_KEY_PATH Required"
-fi
-
-if [ -n "$SSL_CERT_PATH" ]; then
-    CERT_PATH=$SSL_CERT_PATH
-else
-    echo "SSL_CERT_PATH Required"
-fi
-
-# Generate self signed certificate
-#if [ ! -f $CERT_PATH ] || [ ! -f $KEY_PATH ]; then
-#    mkdir -p $CERT_FOLDER
-#    echo "SSL Key or certificate not found. Generating self-signed certificates"
-#    openssl genrsa -out $KEY_PATH
-#    openssl req -new -key $KEY_PATH -out $CSR_PATH \
-#    -subj "/CN=smtp"
-#    openssl x509 -req -days 3650 -in $CSR_PATH -signkey $KEY_PATH -out $CERT_PATH
-#fi
-
+echo "DKIM Record of $DKIM_SELECTOR (cat $DKIM_KEY_PATH.txt)"
+cat $DKIM_KEY_PATH.txt
 
 #############################################
 # Add dependencies into the chrooted folder
@@ -178,3 +117,6 @@ services start
 # Redirect logs to stdout
 tail -F "/var/log/mail.log" &
 wait $!
+
+
+# supervisord --nodaemon

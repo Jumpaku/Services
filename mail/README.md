@@ -1,5 +1,7 @@
 # Mail
 
+## DNS
+
 ### MX
 
 ```
@@ -15,12 +17,16 @@ mail.jumpaku.net.
 ### DKIM
 
 ```sh
-docker-compose exec postfix cat /etc/dkimkeys/default.private.txt
+sudo docker-compose exec postfix cat /etc/dkimkeys/default.private.txt
 ```
 
 ```
 default._domainkey      IN      TXT     ( "v=DKIM1; h=sha256; k=rsa; "
           "p=MIIBIjANBgkq ... zwN3sQIDAQAB" )  ; ----- DKIM key default for jumpaku.net
+```
+
+```
+_adsp._domainkey      IN      TXT     dkim=unknown
 ```
 
 ## Postfix
@@ -65,6 +71,11 @@ smtps
 ```
 
 ## Dovecot
+
+```sh
+mkdir -p ./dovecot/mail/
+chmod -R oug+rw ./dovecot/mail/
+```
 
 ### /etc/dovecot/conf.d/10-mail.conf
 
