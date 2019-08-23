@@ -32,33 +32,4 @@ Configure "sieve_dir" "$INBOX_PATH.sieve" "$DOVECOT_SIEVE_CONF" "Set sieve_dir=$
 Configure "sieve" "$INBOX_PATH.sieve/sieve" "$DOVECOT_SIEVE_CONF" "Set sieve=$INBOX_PATH.sieve/sieve"
 
 
-#supervisord --nodaemon
-
-
-#########################################
-# Start dovecot
-#########################################
-
-function stop_service {
-	if [ -n $DOVECOT_PID ]; then
-		echo ""
-		echo "#########################################"
-		echo "Stopping Dovecot"
-		echo "#########################################"
-		kill $DOVECOT_PID
-	fi
-}
-
-function start_service {
-	echo ""
-	echo "#########################################"
-	echo "Starting Dovecot"
-	echo "#########################################"
-	dovecot -F &
-	DOVECOT_PID=$!
-}
-
-trap "stop_service; exit 0" SIGINT SIGTERM
-
-start_service
-wait $DOVECOT_PID
+supervisord

@@ -58,10 +58,6 @@ fi
 echo "DKIM Record of $DKIM_SELECTOR (cat $DKIM_KEY_PATH.txt)"
 cat $DKIM_KEY_PATH.txt
 
-#############################################
-# Add dependencies into the chrooted folder
-#############################################
-
 echo "Adding host configurations into postfix jail"
 rm -rf /var/spool/postfix/etc
 mkdir -p /var/spool/postfix/etc
@@ -73,50 +69,9 @@ rm -rf "/var/spool/postfix/lib"
 mkdir -p "/var/spool/postfix/lib/$(uname -m)-linux-gnu"
 cp -v /lib/$(uname -m)-linux-gnu/libnss_* "/var/spool/postfix/lib/$(uname -m)-linux-gnu/"
 
-
-
-#########################################
-# Start services
-#########################################
-
-function services {
-	echo ""
-	echo "#########################################"
-	echo "$1 rsyslog"
-	echo "#########################################"
-	service rsyslog $1
-
-	echo ""
-	echo "#########################################"
-	echo "$1 SASL"
-	echo "#########################################"
-	service saslauthd $1
-
-	#if isDkimEnabled; then
-	echo ""
-	echo "#########################################"
-	echo "$1 OpenDKIM"
-	echo "#########################################"
-	service opendkim $1
-	#fi
-
-	echo ""
-	echo "#########################################"
-	echo "$1 Postfix"
-	echo "#########################################"
-	postfix $1
-}
-
-# Set signal handlers
-trap "services stop; exit 0" SIGINT SIGTERM
-trap "services reload" SIGHUP
-
-# Start services
-services start
-
-# Redirect logs to stdout
-tail -F "/var/log/mail.log" &
-wait $!
-
-
-# supervisord --nodaemon
+service rsyslog start
+service saslauthd start
+service opendkim start
+service cron start
+postfix start
+tail -F /var/log/mail.log

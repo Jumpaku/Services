@@ -7,7 +7,7 @@ RUN mkdir -p /var/spool/postfix \
 && mkdir -p /etc/postfix
 
 RUN apt-get update && apt-get install -y \
-	openssl \
+	cron \
 	rsyslog \
 	postfix \
 	postfix-ldap \
@@ -24,6 +24,7 @@ COPY ./data/postfix/ /etc/postfix/
 COPY ./data/saslauthd /etc/default/
 COPY ./data/opendkim/ /etc/opendkim/
 COPY ./data/opendkim.conf /etc/opendkim.conf
+COPY ./data/crontab /etc/crontab
 
 COPY entrypoint.sh /entrypoint.sh
 CMD ["/entrypoint.sh"]

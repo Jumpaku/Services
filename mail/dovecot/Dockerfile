@@ -7,7 +7,8 @@ RUN mkdir -p /var/mail \
 && mkdir -p /etc/dovecot
 
 RUN apt-get update && apt-get install -y \
-	openssl \
+	supervisor \
+	cron \
 	dovecot-imapd \
 	dovecot-lmtpd \
 	dovecot-ldap \
@@ -15,7 +16,8 @@ RUN apt-get update && apt-get install -y \
 	dovecot-managesieved \
 && rm -rf /var/lib/apt/lists/*
 
-COPY ./data/ /etc/dovecot/
+COPY ./data/dovecot/ /etc/dovecot/
+COPY ./data/crontab /etc/crontab
 
 COPY entrypoint.sh /entrypoint.sh
 CMD ["/entrypoint.sh"]
