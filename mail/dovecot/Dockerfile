@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y \
 && rm -rf /var/lib/apt/lists/*
 
 COPY ./data/dovecot/ /etc/dovecot/
+COPY ./data/supervisord.conf /etc/supervisor/conf.d/
 COPY ./data/crontab /etc/crontab
 
 COPY entrypoint.sh /entrypoint.sh
