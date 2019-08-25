@@ -1,2 +1,2 @@
 postfix/dkimkeys/*
-rainloop/data/*
+dovecot/mail/*

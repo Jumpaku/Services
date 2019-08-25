@@ -1,5 +1,13 @@
 # Mail
 
+Run servises:
+
+```sh
+sudo docker-compose up --build -d
+```
+
+## DNS
+
 ### MX
 
 ```
@@ -15,12 +23,16 @@ mail.jumpaku.net.
 ### DKIM
 
 ```sh
-docker-compose exec postfix cat /etc/dkimkeys/default.private.txt
+sudo docker-compose exec postfix cat /etc/dkimkeys/default.private.txt
 ```
 
 ```
 default._domainkey      IN      TXT     ( "v=DKIM1; h=sha256; k=rsa; "
           "p=MIIBIjANBgkq ... zwN3sQIDAQAB" )  ; ----- DKIM key default for jumpaku.net
+```
+
+```
+_adsp._domainkey      IN      TXT     dkim=unknown
 ```
 
 ## Postfix
@@ -65,6 +77,11 @@ smtps
 ```
 
 ## Dovecot
+
+```sh
+mkdir -p ./dovecot/mail/
+chmod -R oug+rw ./dovecot/mail/
+```
 
 ### /etc/dovecot/conf.d/10-mail.conf
 
@@ -136,9 +153,9 @@ printf "testuser\0testuser\0user_password" | base64
 ```
 
 ```sh
-telnet postfix:25
-openssl s_client -connect postfix:587 -starttls smtp -ign_eof -crlf
-openssl s_client -connect postfix:465 -ign_eof -crlf
+telnet smtps.jumpaku.net:25
+openssl s_client -connect smtps.jumpaku.net:587 -starttls smtp -ign_eof -crlf
+openssl s_client -connect smtps.jumpaku.net:465 -ign_eof -crlf
 ```
 
 ```sh
@@ -164,8 +181,8 @@ QUIT
 ### IMAP and IMAPS
 
 ```sh
-telnet dovecot 143
-openssl s_client -connect dovecot:993
+telnet imaps.jumpaku.net:143
+openssl s_client -connect imaps.jumpaku.net:993
 ```
 
 ```sh
@@ -179,4 +196,11 @@ c SELECT INBOX
 e LOGOUT
 # * BYE Logging out
 # e OK Logout completed ...
+```
+
+## Check restarting
+
+```sh
+sudo docker-compose logs | grep "reload"
+sudo docker-compose logs | grep "starting up"
 ```

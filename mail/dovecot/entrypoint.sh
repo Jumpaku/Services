@@ -1,100 +1,35 @@
 #!/bin/bash
 
-
-#########################################
-# Update Dovecot conf
-#########################################
-
-function setDovecotConf {
-	KEY="$1"
-	VALUE="$2"
-	FILE="$3"
-	echo "Setting conf: $KEY=$VALUE in ($FILE)"
-	sed -i "s#^\s*$KEY\s*=.*\$#$KEY=$VALUE#g" $FILE
+function Configure {
+    KEY="$1"
+    VALUE="$2"
+    FILE="$3"
+    MESSAGE="$4"
+    sed -i "s#^\s*$KEY\s*=.*\$#$KEY=$VALUE#g" $FILE
+    echo "$MESSAGE"
 }
 
-# Configure LDAP
-if [ -n "$LDAP_HOSTS" ]; then
-	setDovecotConf "hosts" "$LDAP_HOSTS" /etc/dovecot/dovecot-ldap.conf.ext
-fi
+DOVECOT_LDAP_CONF=/etc/dovecot/dovecot-ldap.conf.ext
+#LDAP_FILTER="(uid=%n)"
+echo "Configure: $DOVECOT_LDAP_CONF"
+Configure "hosts" "$LDAP_HOSTS" "$DOVECOT_LDAP_CONF" "Set hosts=$LDAP_HOSTS, LDAP_BASE: Required"
+Configure "base" "$LDAP_BASE" "$DOVECOT_LDAP_CONF" "Set base=$LDAP_BASE, LDAP_BASE: Required"
+Configure "user_filter" "(uid=%n)" "$DOVECOT_LDAP_CONF" "Set user_filter=(uid=%n)"
+Configure "pass_filter" "(uid=%n)" "$DOVECOT_LDAP_CONF" "Set pass_filter=(uid=%n)"
+Configure "pass_attrs" "uid=user" "$DOVECOT_LDAP_CONF" "Set pass_attrs=uid=user"
 
-if [ -n "$LDAP_BASE" ]; then
-	setDovecotConf "base" "$LDAP_BASE" /etc/dovecot/dovecot-ldap.conf.ext
-fi
+DOVECOT_SSL_CONF=/etc/dovecot/conf.d/10-ssl.conf
+echo "Configure: $DOVECOT_SSL_CONF"
+Configure "ssl_key" "<$SSL_KEY_PATH" "$DOVECOT_SSL_CONF" "Set ssl_key=<$SSL_KEY_PATH, SSL_KEY_PATH: Required"
+Configure "ssl_cert" "<$SSL_CERT_PATH" "$DOVECOT_SSL_CONF" "Set ssl_cert=<$SSL_CERT_PATH, SSL_CERT_PATH: Required"
 
-if [ -n "$LDAP_USER_FIELD" ]; then
-	setDovecotConf "user_filter" "($LDAP_USER_FIELD=%n)" /etc/dovecot/dovecot-ldap.conf.ext
-	setDovecotConf "pass_filter" "($LDAP_USER_FIELD=%n)" /etc/dovecot/dovecot-ldap.conf.ext
-fi
-
-if [ -n "$LDAP_USER_FIELD" ]; then
-	setDovecotConf "pass_attrs" "$LDAP_USER_FIELD=user" /etc/dovecot/dovecot-ldap.conf.ext
-fi
-
-# Set SSL resource paths
-if [ -n "$SSL_KEY_PATH" ]; then
-	setDovecotConf "ssl_key" "<$SSL_KEY_PATH" /etc/dovecot/conf.d/10-ssl.conf
-fi
-if [ -n "$SSL_CERT_PATH" ]; then
-	setDovecotConf "ssl_cert" "<$SSL_CERT_PATH" /etc/dovecot/conf.d/10-ssl.conf
-fi
-
-#########################################
-# Generate SSL certification
-#########################################
-
-CERT_FOLDER="/etc/ssl/localcerts"
-CSR_PATH="/tmp/imap.csr.pem"
-
-if [ -n "$SSL_KEY_PATH" ]; then
-	KEY_PATH=$SSL_KEY_PATH
-else
-	KEY_PATH="$CERT_FOLDER/imap.key.pem"
-fi
-
-if [ -n "$SSL_CERT_PATH" ]; then
-	CERT_PATH=$SSL_CERT_PATH
-else
-	CERT_PATH="$CERT_FOLDER/imap.cert.pem"
-fi
-
-if [ ! -f $CERT_PATH ] || [ ! -f $KEY_PATH ]; then
-	mkdir -p $CERT_FOLDER
-
-    echo "SSL Key or certificate not found. Generating self-signed certificates"
-    openssl genrsa -out $KEY_PATH
-
-    openssl req -new -key $KEY_PATH -out $CSR_PATH \
-    -subj "/CN=imap"
-
-    openssl x509 -req -days 3650 -in $CSR_PATH -signkey $KEY_PATH -out $CERT_PATH
-fi
+DOVECOT_MAIL_CONF=/etc/dovecot/conf.d/10-mail.conf
+DOVECOT_SIEVE_CONF=/etc/dovecot/conf.d/90-sieve.conf
+INBOX_PATH="/var/mail/%n" # %n: user part in user@domain
+echo "Configure: $DOVECOT_MAIL_CONF, $DOVECOT_SIEVE_CONF"
+Configure "mail_location" "maildir:$INBOX_PATH" "$DOVECOT_MAIL_CONF" "Set mail_location=maildir:$INBOX_PATH, INBOX_PATH: Required"
+Configure "sieve_dir" "$INBOX_PATH.sieve" "$DOVECOT_SIEVE_CONF" "Set sieve_dir=$INBOX_PATH.sieve"
+Configure "sieve" "$INBOX_PATH.sieve/sieve" "$DOVECOT_SIEVE_CONF" "Set sieve=$INBOX_PATH.sieve/sieve"
 
 
-#########################################
-# Start dovecot
-#########################################
-
-function stop_service {
-	if [ -n $DOVECOT_PID ]; then
-		echo ""
-		echo "#########################################"
-		echo "Stopping Dovecot"
-		echo "#########################################"
-		kill $DOVECOT_PID
-	fi
-}
-
-function start_service {
-	echo ""
-	echo "#########################################"
-	echo "Starting Dovecot"
-	echo "#########################################"
-	dovecot -F &
-	DOVECOT_PID=$!
-}
-
-trap "stop_service; exit 0" SIGINT SIGTERM
-
-start_service
-wait $DOVECOT_PID
+supervisord
