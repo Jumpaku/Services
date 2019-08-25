@@ -1,0 +1,52 @@
+version: '3'
+
+services: 
+
+  postfix:
+    container_name: 'postfix'
+    build: './postfix'
+    networks: 
+      - 'ldap_network'
+    environment: 
+      - 'LDAP_HOSTS=openldap'
+      - 'LDAP_BASE=ou=users,dc=jumpaku,dc=net'
+      - 'DOMAIN=jumpaku.net'
+      - 'HOSTNAME=smtps.jumpaku.net'
+      - 'LMTP_HOST=dovecot'
+      - 'DKIM_SELECTOR=default'
+      - 'DKIM_KEY_PATH=/etc/dkimkeys/default.private'
+      - 'SSL_KEY_PATH=/etc/ssl/localcerts/domain.key'
+      - 'SSL_CERT_PATH=/etc/ssl/localcerts/signed.crt'
+    volumes: 
+      - './postfix/dkimkeys/:/etc/dkimkeys/'
+      - '../reverse_proxy/certs/smtps.jumpaku.net/production/:/etc/ssl/localcerts/:ro'
+    ports: 
+      - '25:25'
+      - '587:587'
+      - '465:465'
+
+  dovecot:
+    container_name: 'dovecot'
+    build: './dovecot'
+    networks: 
+      - 'ldap_network'
+    environment: 
+      - 'LDAP_HOSTS=openldap'
+      - 'LDAP_BASE=ou=users,dc=jumpaku,dc=net'
+      - 'SSL_KEY_PATH=/etc/ssl/localcerts/domain.key'
+      - 'SSL_CERT_PATH=/etc/ssl/localcerts/signed.crt'
+    volumes: 
+      - '../reverse_proxy/certs/imaps.jumpaku.net/production/:/etc/ssl/localcerts/:ro'
+      - './dovecot/mail/:/var/mail/'
+    ports: 
+      - '993:993'
+  
+  mail_test:
+    build: './mail_test'
+    container_name: 'mail_test'
+    networks: 
+      - 'ldap_network'
+
+networks:
+  ldap_network:
+    external: true
