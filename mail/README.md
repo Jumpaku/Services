@@ -191,3 +191,10 @@ e LOGOUT
 # * BYE Logging out
 # e OK Logout completed ...
 ```
+
+## Check restarting
+
+```sh
+sudo docker-compose logs | grep "reload"
+sudo docker-compose logs | grep "starting up"
+```
