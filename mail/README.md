@@ -1,5 +1,11 @@
 # Mail
 
+Run servises:
+
+```sh
+sudo docker-compose up --build -d
+```
+
 ## DNS
 
 ### MX
