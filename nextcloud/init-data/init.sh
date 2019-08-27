@@ -1,18 +1,17 @@
 #!/bin/bash
 
-docker-compose exec --user www-data nextcloud php occ app:disable files_versions
-docker-compose exec --user www-data nextcloud php occ app:enable user_ldap
-docker-compose exec --user www-data nextcloud php occ app:list
+php occ app:disable files_versions
+php occ app:enable user_ldap
 
 CONFIG_ID="s01"
-docker-compose exec --user www-data nextcloud php occ ldap:delete-config "$CONFIG_ID"
-docker-compose exec --user www-data nextcloud php occ ldap:create-empty-config
+php occ ldap:delete-config "$CONFIG_ID"
+php occ ldap:create-empty-config
 
 function ConfigureLdap {
     KEY="$1"
     VALUE="$2"
     MESSAGE="$3"
-    docker-compose exec --user www-data nextcloud php occ ldap:set-config "$CONFIG_ID" "$KEY" "$VALUE"
+    php occ ldap:set-config "$CONFIG_ID" "$KEY" "$VALUE"
     echo "Configure: $MESSAGE"
 }
 
@@ -29,4 +28,3 @@ ConfigureLdap ldapPort 389 "ldapPort"
 ConfigureLdap ldapUserDisplayName uid "ldapUserDisplayName"
 ConfigureLdap ldapUserFilter '(|(objectclass=inetOrgPerson))' "ldapUserFilter"
 ConfigureLdap ldapUserFilterObjectclass inetOrgPerson "ldapUserFilterObjectclass"
-docker-compose exec --user www-data nextcloud php occ ldap:show-config "$CONFIG_ID"

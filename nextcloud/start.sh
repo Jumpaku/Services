@@ -1,7 +1,3 @@
 #!/bin/bash
 
-#echo NEXTCLOUD_ADMIN_PASSWORD=${APP_ADMIN_PASSWORD}
-#echo MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-#echo MYSQL_PASSWORD=${MYSQL_PASSWORD}
-
 docker-compose up --build -d

@@ -1,2 +1,2 @@
-nextcloud/*
-nextcloud_mariadb/*
+nextcloud_data/*
+nextcloud_mariadb_data/*

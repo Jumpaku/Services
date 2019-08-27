@@ -1,12 +1,19 @@
 # nextcloud
 
+```sh
+export NEXTCLOUD_PASSWORD=nextcloud_password
+export NEXTCLOUD_MYSQL_ROOT_PASSWORD=nextcloudmysql_root_password
+export NEXTCLOUD_MYSQL_PASSWORD=nextcloud_mysql_password
+```
+
 ## Start
 
 ```sh
-export MYSQL_ROOT_PASSWORD=mysql_root_password
-export MYSQL_PASSWORD=mysql_password
-export APP_ADMIN_PASSWORD=app_admin_password
-cd ./nextcloud
 sudo -E ./start.sh
+```
+
+## Initialize
+
+```sh
 sudo -E ./init.sh
 ```

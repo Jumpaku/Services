@@ -9,6 +9,8 @@ services:
     environment:
       - "USER_UID=1000"
       - "USER_GID=1000"
+      - "GITEA_ADMIN=gitea_admin"
+      - "GITEA_ADMIN_PASSWORD=${GITEA_PASSWORD}"
       - "DISABLE_SSH=true"
       - "HTTP_PORT=3000"
       - "APP_DOMAIN=gitea.jumpaku.net"
@@ -16,9 +18,7 @@ services:
       - "DB_HOST=gitea_postgres:5432"
       - "DB_NAME=gitea"
       - "DB_USER=gitea"
-      - "DB_PASSWD=${APP_ADMIN_PASSWORD}"
-      - "GITEA_ADMIN=gitea_admin"
-      - "GITEA_ADMIN_PASSWORD=${APP_ADMIN_PASSWORD}"
+      - "DB_PASSWD=${GITEA_POSTGRES_PASSWORD}"
     #restart: always
     networks:
       - 'db_network'
@@ -35,7 +35,7 @@ services:
     environment:
       - "POSTGRES_DB=gitea"
       - "POSTGRES_USER=gitea"
-      - "POSTGRES_PASSWORD=${APP_ADMIN_PASSWORD}"
+      - "POSTGRES_PASSWORD=${GITEA_POSTGRES_PASSWORD}"
     volumes:
       - './gitea_postgres_data/:/var/lib/postgresql/data/'
     networks:
