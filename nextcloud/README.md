@@ -15,5 +15,5 @@ sudo -E ./start.sh
 ## Initialize
 
 ```sh
-sudo -E ./init.sh
+sudo -E ./initialize.sh
 ```
