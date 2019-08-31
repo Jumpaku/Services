@@ -2,6 +2,9 @@
 
 php occ app:disable files_versions
 php occ app:enable user_ldap
+php occ config:system:set trusted_domains 0 --value=localhost
+php occ config:system:set trusted_domains 1 --value=nextcloud
+php occ config:system:set trusted_domains 2 --value="$NEXTCLOUD_DOMAIN"
 
 CONFIG_ID="s01"
 php occ ldap:delete-config "$CONFIG_ID"
@@ -15,6 +18,8 @@ function ConfigureLdap {
     echo "Configure: $MESSAGE"
 }
 
+ConfigureLdap homeFolderNamingRule 'attr:uid' "homeFolderNamingRule"
+ConfigureLdap ldapExpertUsernameAttr uid "ldapExpertUsernameAttr"
 ConfigureLdap ldapBase ou=users,dc=jumpaku,dc=net "ldapBase"
 ConfigureLdap ldapBaseGroups ou=users,dc=jumpaku,dc=net "ldapBaseGroups"
 ConfigureLdap ldapBaseUsers ou=users,dc=jumpaku,dc=net "ldapBaseUsers"

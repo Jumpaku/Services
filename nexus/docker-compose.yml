@@ -6,6 +6,7 @@ services:
     container_name: 'nexus'
     volumes: 
       - './nexus-data:/nexus-data'
+      - './nexus-backup:/nexus-backup'
     networks:
       - 'reverse_proxy_network'
       - 'ldap_network'
