@@ -72,6 +72,6 @@ cp -v /lib/$(uname -m)-linux-gnu/libnss_* "/var/spool/postfix/lib/$(uname -m)-li
 service rsyslog start
 service saslauthd start
 service opendkim start
-service cron start
+cron
 postfix start
 tail -F /var/log/mail.log
