@@ -31,5 +31,8 @@ Configure "mail_location" "maildir:$INBOX_PATH" "$DOVECOT_MAIL_CONF" "Set mail_l
 Configure "sieve_dir" "$INBOX_PATH.sieve" "$DOVECOT_SIEVE_CONF" "Set sieve_dir=$INBOX_PATH.sieve"
 Configure "sieve" "$INBOX_PATH.sieve/sieve" "$DOVECOT_SIEVE_CONF" "Set sieve=$INBOX_PATH.sieve/sieve"
 
+echo "Setting cron"
+chown root /etc/crontab
+chmod 644 /etc/crontab
 
 supervisord
