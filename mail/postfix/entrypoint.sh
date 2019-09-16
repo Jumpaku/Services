@@ -58,6 +58,10 @@ fi
 echo "DKIM Record of $DKIM_SELECTOR (cat $DKIM_KEY_PATH.txt)"
 cat $DKIM_KEY_PATH.txt
 
+echo "Setting cron"
+chown root /etc/crontab
+chmod 644 /etc/crontab
+
 echo "Adding host configurations into postfix jail"
 rm -rf /var/spool/postfix/etc
 mkdir -p /var/spool/postfix/etc
@@ -72,6 +76,6 @@ cp -v /lib/$(uname -m)-linux-gnu/libnss_* "/var/spool/postfix/lib/$(uname -m)-li
 service rsyslog start
 service saslauthd start
 service opendkim start
-cron
+service cron start
 postfix start
 tail -F /var/log/mail.log
