@@ -1,8 +1,0 @@
-FROM alpine:3.8
-
-RUN apk --update add openldap-clients
-WORKDIR /home/data
-COPY ./data /home/data
-RUN chmod +x initialize.sh
-
-CMD [ "./initialize.sh" ]

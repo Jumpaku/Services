@@ -3,28 +3,22 @@ version: '3'
 services: 
 
   openldap:
-    build:
-      context: ./openldap
-      dockerfile: Dockerfile-openldap
-    container_name: openldap
+    build: './openldap'
+    container_name: 'openldap'
     networks: 
-      - ldap_network
+      - 'ldap_network'
     environment:
       - "LDAP_ROOT_PW=${LDAP_ROOT_PW}"
 
-  ldap_init:
-    build:
-      context: ./ldap_init
-      dockerfile: Dockerfile-ldap_init
-    container_name: ldap_init
-    depends_on: 
-      - openldap
+  ldap-client:
+    build: './ldap-client'
+    container_name: 'ldap-client'
     environment: 
       - "LDAP_ROOT_PW=${LDAP_ROOT_PW}"
     networks: 
-      - ldap_network
+      - 'ldap_network'
     volumes:
-      - "./ldap_init/data/:/home/data/"
+      - './users.ldif:/home/data/users.ldif:ro'
 
 networks:
   ldap_network:
