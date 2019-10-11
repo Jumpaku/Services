@@ -1,5 +1,14 @@
 # Mail
 
+# Rainloop
+
+## Start
+
+```sh
+sudo docker-compose up -d
+```
+
+
 Run servises:
 
 ```sh
