@@ -6,5 +6,7 @@ COPY ./data /home/data
 RUN chmod +x init.sh
 RUN chmod +x modify.sh
 RUN chmod +x display.sh
+RUN chmod +x run.sh
 
-#CMD [ "./initialize.sh" ]
+ENTRYPOINT [ "./run.sh" ]
+CMD [ "init" ]

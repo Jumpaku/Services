@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 mkdir -p nexus-data/
 chmod 775 nexus-data/

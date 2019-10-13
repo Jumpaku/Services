@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ADMIN_PASSWORD=`docker-compose exec nexus cat /nexus-data/admin.password`
 echo "admin name is:"

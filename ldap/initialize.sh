@@ -1,3 +1,3 @@
 #!/bin/sh
 
-docker-compose run ldap-client ./init.sh
+docker-compose run ldap-client init

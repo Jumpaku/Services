@@ -1,4 +1,4 @@
 #!/bin/sh
 
-ldapsearch -x -h openldap -D "cn=admin,dc=jumpaku,dc=net" -w secret_password -b "dc=jumpaku,dc=net" "(objectClass=*)"
+ldapsearch -x -h openldap -D "cn=admin,${LDAP_SUFFIX}" -w ${LDAP_ROOT_PW} -b "${LDAP_SUFFIX}" "(objectClass=*)"
 
