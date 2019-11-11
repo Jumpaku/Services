@@ -13,23 +13,25 @@ php occ ldap:create-empty-config
 function ConfigureLdap {
     KEY="$1"
     VALUE="$2"
-    MESSAGE="$3"
+    echo "$KEY : $VALUE"
     php occ ldap:set-config "$CONFIG_ID" "$KEY" "$VALUE"
-    echo "Configure: $MESSAGE"
 }
 
-ConfigureLdap homeFolderNamingRule 'attr:uid' "homeFolderNamingRule"
-ConfigureLdap ldapExpertUsernameAttr uid "ldapExpertUsernameAttr"
-ConfigureLdap ldapBase ou=users,dc=jumpaku,dc=net "ldapBase"
-ConfigureLdap ldapBaseGroups ou=users,dc=jumpaku,dc=net "ldapBaseGroups"
-ConfigureLdap ldapBaseUsers ou=users,dc=jumpaku,dc=net "ldapBaseUsers"
-ConfigureLdap ldapConfigurationActive 1 "ldapConfigurationActive"
-ConfigureLdap ldapEmailAttribute mail "ldapEmailAttribute"
-ConfigureLdap ldapHost openldap "ldapHost"
-ConfigureLdap ldapLoginFilter '(&(|(objectclass=inetOrgPerson))(|(uid=%uid)))' "ldapLoginFilter"
-ConfigureLdap ldapLoginFilterAttributes uid "ldapLoginFilterAttributes"
-ConfigureLdap ldapLoginFilterUsername 0 "ldapLoginFilterUsername"
-ConfigureLdap ldapPort 389 "ldapPort"
-ConfigureLdap ldapUserDisplayName uid "ldapUserDisplayName"
-ConfigureLdap ldapUserFilter '(|(objectclass=inetOrgPerson))' "ldapUserFilter"
-ConfigureLdap ldapUserFilterObjectclass inetOrgPerson "ldapUserFilterObjectclass"
+echo "Configure LDAP"
+ConfigureLdap homeFolderNamingRule 'attr:uid'
+ConfigureLdap ldapAgentName "cn=app,${LDAP_SUFFIX}"
+ConfigureLdap ldapAgentPassword "${LDAP_APP_PASSWORD}"
+ConfigureLdap ldapExpertUsernameAttr uid
+ConfigureLdap ldapBase "ou=users,${LDAP_SUFFIX}"
+ConfigureLdap ldapBaseGroups "ou=users,${LDAP_SUFFIX}"
+ConfigureLdap ldapBaseUsers "ou=users,${LDAP_SUFFIX}"
+ConfigureLdap ldapConfigurationActive 1
+ConfigureLdap ldapEmailAttribute mail
+ConfigureLdap ldapHost openldap
+ConfigureLdap ldapLoginFilter '(&(|(objectclass=inetOrgPerson))(|(uid=%uid)))'
+ConfigureLdap ldapLoginFilterAttributes uid
+ConfigureLdap ldapLoginFilterUsername 0
+ConfigureLdap ldapPort 389
+ConfigureLdap ldapUserDisplayName uid
+ConfigureLdap ldapUserFilter '(|(objectclass=inetOrgPerson))'
+ConfigureLdap ldapUserFilterObjectclass inetOrgPerson
