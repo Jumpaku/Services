@@ -10,6 +10,8 @@ services:
     environment: 
       - 'LDAP_HOSTS=openldap'
       - 'LDAP_BASE=ou=users,dc=jumpaku,dc=net'
+      - 'LDAP_BIND_DN=cn=app,dc=jumpaku,dc=net'
+      - 'LDAP_BIND_PW=$LDAP_APP_PASSWORD'
       - 'DOMAIN=jumpaku.net'
       - 'HOSTNAME=smtps.jumpaku.net'
       - 'LMTP_HOST=dovecot'

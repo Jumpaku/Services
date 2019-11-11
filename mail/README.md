@@ -195,7 +195,8 @@ printf "testuser\0testuser\0user_password" | base64
 ```
 
 ```sh
-telnet smtps.jumpaku.net:25
+#telnet smtps.jumpaku.net:25
+openssl s_client -connect smtps.jumpaku.net:25 -starttls smtp -ign_eof -crlf
 openssl s_client -connect smtps.jumpaku.net:587 -starttls smtp -ign_eof -crlf
 openssl s_client -connect smtps.jumpaku.net:465 -ign_eof -crlf
 ```
