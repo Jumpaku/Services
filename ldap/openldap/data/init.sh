@@ -17,6 +17,16 @@ sed -i "s|^TLSCACertificateFile.*$|TLSCACertificateFile\t${CERTS_DIR}/signed.crt
 sed -i "s|^TLSCertificateFile.*$|TLSCertificateFile\t${CERTS_DIR}/signed.crt|" ${SLAPD_CONF}
 sed -i "s|^TLSCertificateKeyFile.*$|TLSCertificateKeyFile\t${CERTS_DIR}/domain.key|" ${SLAPD_CONF}
 
+#echo "access to attr=userPassword" by * auth" >> ${SLAPD_CONF}
+echo "" >> ${SLAPD_CONF}
+# * is allowed to bind.
+echo "access to dn.children=\"${LDAP_SUFFIX}\" attrs=userPassword by * auth" >> ${SLAPD_CONF}
+# app is allawed to read users.
+echo "access to dn.subtree=\"ou=users,${LDAP_SUFFIX}\"" >> ${SLAPD_CONF}
+echo "    by dn.base=\"cn=app,${LDAP_SUFFIX}\" read" >> ${SLAPD_CONF}
+echo "    by self read" >> ${SLAPD_CONF}
+echo "    by * none" >> ${SLAPD_CONF}
+
 slaptest -u -f ${SLAPD_CONF}
 
 slapd -h 'ldap:/// ldaps:///' -d 256

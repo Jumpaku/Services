@@ -9,16 +9,20 @@ services:
       - 'ldap_network'
     environment:
       - "LDAP_ROOT_PW=${LDAP_ROOT_PW}"
+      - "LDAP_SUFFIX=dc=jumpaku,dc=net"
+    volumes: 
+      - '../reverse_proxy/certs/ldaps.jumpaku.net/local:/home/openldap/certs/'
+    ports:
+      - '636:636'
 
   ldap-client:
     build: './ldap-client'
     container_name: 'ldap-client'
     environment: 
       - "LDAP_ROOT_PW=${LDAP_ROOT_PW}"
+      - "LDAP_SUFFIX=dc=jumpaku,dc=net"
     networks: 
       - 'ldap_network'
-    volumes:
-      - './users.ldif:/home/data/users.ldif:ro'
 
 networks:
   ldap_network:
