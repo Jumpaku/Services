@@ -26,8 +26,6 @@ services:
       - 'MYSQL_USER=admin'
       - 'MYSQL_PASSWORD=${NEXTCLOUD_MYSQL_PASSWORD}'
       - 'MYSQL_HOST=nextcloud_mariadb'
-    ports:
-      - '8080:80'
 
   nextcloud_mariadb:
     image: 'mariadb'

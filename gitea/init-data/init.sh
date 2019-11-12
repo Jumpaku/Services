@@ -63,7 +63,16 @@ http://localhost:${HTTP_PORT}/install
 # > /data/install.html
 
 # LDAP Auth
-/app/gitea/gitea admin auth add-ldap-simple --name auth_ldap_simple --host openldap --security-protocol unencrypted --port 389 --user-dn "uid=%s,ou=users,dc=jumpaku,dc=net" --user-filter "(uid=%s)" --email-attribute mail
+/app/gitea/gitea admin auth add-ldap \
+  --name auth_ldap \
+  --host openldap \
+  --security-protocol unencrypted \
+  --port 389 \
+  --bind-dn "${LDAP_BIND_DN}" \
+  --bind-password "${LDAP_BIND_PASSWORD}" \
+  --user-search-base "${LDAP_USER_SEARCH_BASE}" \
+  --user-filter "(uid=%s)" \
+  --email-attribute mail
 
 GITEA_CONF_APP_INI=/data/gitea/conf/app.ini
 function Append {
