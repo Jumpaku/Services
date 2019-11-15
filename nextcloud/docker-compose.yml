@@ -3,7 +3,7 @@ version: '3'
 services:
 
   nextcloud:
-    image: 'nextcloud:16'
+    image: 'nextcloud:17'
     container_name: 'nextcloud'
     depends_on:
       - 'nextcloud_mariadb'
