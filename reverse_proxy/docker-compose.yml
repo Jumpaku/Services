@@ -15,8 +15,6 @@ services:
     # restart: always
     env_file: 
       - 'reverse_proxy.env'
-    depends_on: 
-      - 'reverse_proxy_test'
 
 networks:
   reverse_proxy_network:
