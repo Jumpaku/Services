@@ -2,13 +2,14 @@ version: '3'
 
 services: 
   nexus:
-    image: sonatype/nexus3
-    container_name: nexus
+    image: 'sonatype/nexus3:3.18.1'
+    container_name: 'nexus'
     volumes: 
       - './nexus-data:/nexus-data'
+      - './nexus-backup:/nexus-backup'
     networks:
-      - reverse_proxy_network
-      - ldap_network
+      - 'reverse_proxy_network'
+      - 'ldap_network'
 
 networks:
   reverse_proxy_network:

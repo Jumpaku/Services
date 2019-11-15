@@ -21,4 +21,4 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 #52 6	1 * *	root	test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.monthly )
 #
 #*  *  *  *  * root date >> /dates.txt
-0  4  *  *  sat root supervisorctl restart dovecot
+0  4  *  *  sat root supervisorctl restart dovecot && date >> /updated_on.txt

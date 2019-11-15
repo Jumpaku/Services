@@ -14,6 +14,8 @@ echo "Configure: $SASLAUTHD_CONF"
 ConfigureColon "ldap_servers" "ldap://$LDAP_HOSTS" "$SASLAUTHD_CONF" "Set hosts=ldap://$LDAP_HOSTS, LDAP_HOSTS: Required"
 ConfigureColon "ldap_search_base" "$LDAP_BASE" "$SASLAUTHD_CONF" "Set ldap_search_base: $LDAP_BASE, LDAP_BASE: Required"
 ConfigureColon "ldap_filter" "(uid=%u)" "$SASLAUTHD_CONF" "Set ldap_filter: (uid=%u)"
+ConfigureColon "ldap_bind_dn" "$LDAP_BIND_DN" "$SASLAUTHD_CONF" "Set ldap_bind_dn: $LDAP_BIND_DN"
+ConfigureColon "ldap_bind_pw" "$LDAP_BIND_PW" "$SASLAUTHD_CONF" "Set ldap_bind_pw: ***"
 
 function ConfigureEq {
     KEY="$1"
@@ -57,6 +59,10 @@ if [ ! -f $DKIM_KEY_PATH ]; then
 fi
 echo "DKIM Record of $DKIM_SELECTOR (cat $DKIM_KEY_PATH.txt)"
 cat $DKIM_KEY_PATH.txt
+
+echo "Setting cron"
+chown root /etc/crontab
+chmod 644 /etc/crontab
 
 echo "Adding host configurations into postfix jail"
 rm -rf /var/spool/postfix/etc

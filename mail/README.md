@@ -1,5 +1,47 @@
 # Mail
 
+```sh
+docker-compose run mail_test ash
+
+printf "testuser\0testuser\0user_password" | base64
+# dGVzdHVzZXIAdGVzdHVzZXIAdXNlcl9wYXNzd29yZA==
+
+telnet jumpaku.net:25
+
+# 220 jumpaku.net ESMTP Postfix
+EHLO jumpaku.net
+# 250-jumpaku.net
+# ...
+AUTH PLAIN dGVzdHVzZXIAdGVzdHVzZXIAdXNlcl9wYXNzd29yZA==
+# 235 2.7.0 Authentication successful
+MAIL FROM:testuser@jumpaku.net
+# 250 2.1.0 Ok
+RCPT TO:testuser@jumpaku.net
+DATA
+From: testuser@jumpaku.net
+Subject: Mail Test
+
+Body of test mail
+
+.
+QUIT
+```
+
+## Prerequisite
+
+```sh
+export LDAP_APP_PASSWORD=app_password
+```
+
+# Rainloop
+
+## Start
+
+```sh
+sudo docker-compose up -d
+```
+
+
 Run servises:
 
 ```sh
@@ -138,7 +180,7 @@ service auth {
 ## Auth Test
 
 ```sh
-docker-compose run mail_test ash
+sudo -E docker-compose run mail_test ash
 ```
 
 * uid : testuser
@@ -153,7 +195,8 @@ printf "testuser\0testuser\0user_password" | base64
 ```
 
 ```sh
-telnet smtps.jumpaku.net:25
+#telnet smtps.jumpaku.net:25
+openssl s_client -connect smtps.jumpaku.net:25 -starttls smtp -ign_eof -crlf
 openssl s_client -connect smtps.jumpaku.net:587 -starttls smtp -ign_eof -crlf
 openssl s_client -connect smtps.jumpaku.net:465 -ign_eof -crlf
 ```

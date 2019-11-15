@@ -1,12 +1,23 @@
 # nexus
 
-## Start
+# Start
 
 ```sh
-mkdir -p nexus/nexus-data/
-sudo chown -R 200:200 nexus/nexus-data/
-sudo docker-compose -f nexus/docker-compose.yml up -d
+sudo -E ./start.sh
 ```
+
+# Initialize
+
+```sh
+sudo -E ./initialize.sh
+```
+
+Setup in browser
+
+## Initial password
+
+initial password: ${SONATYPE_WORK}/nexus3/admin.password
+
 
 ## References
 

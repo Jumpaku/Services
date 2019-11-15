@@ -5,7 +5,9 @@ services:
     image: 'hardware/rainloop'
     container_name: 'rainloop'
     volumes:
-      - './rainloop/data/:/rainloop/data'
+      - './rainloop_data/:/rainloop/data'
+    environment: 
+      - 'LOG_TO_STDOUT=true'
     networks: 
       - 'reverse_proxy_network'
       

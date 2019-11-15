@@ -5,7 +5,7 @@ function Configure {
     VALUE="$2"
     FILE="$3"
     MESSAGE="$4"
-    sed -i "s#^\s*$KEY\s*=.*\$#$KEY=$VALUE#g" $FILE
+    sed -i "s?^#*\s*$KEY\s*=.*\$?$KEY=$VALUE?g" $FILE
     echo "$MESSAGE"
 }
 
@@ -13,6 +13,8 @@ DOVECOT_LDAP_CONF=/etc/dovecot/dovecot-ldap.conf.ext
 #LDAP_FILTER="(uid=%n)"
 echo "Configure: $DOVECOT_LDAP_CONF"
 Configure "hosts" "$LDAP_HOSTS" "$DOVECOT_LDAP_CONF" "Set hosts=$LDAP_HOSTS, LDAP_BASE: Required"
+Configure "dn" "$LDAP_DN" "$DOVECOT_LDAP_CONF" "Set dn=$LDAP_DN"
+Configure "dnpass" "$LDAP_DNPASS" "$DOVECOT_LDAP_CONF" "Set dnpass=***"
 Configure "base" "$LDAP_BASE" "$DOVECOT_LDAP_CONF" "Set base=$LDAP_BASE, LDAP_BASE: Required"
 Configure "user_filter" "(uid=%n)" "$DOVECOT_LDAP_CONF" "Set user_filter=(uid=%n)"
 Configure "pass_filter" "(uid=%n)" "$DOVECOT_LDAP_CONF" "Set pass_filter=(uid=%n)"
@@ -31,5 +33,12 @@ Configure "mail_location" "maildir:$INBOX_PATH" "$DOVECOT_MAIL_CONF" "Set mail_l
 Configure "sieve_dir" "$INBOX_PATH.sieve" "$DOVECOT_SIEVE_CONF" "Set sieve_dir=$INBOX_PATH.sieve"
 Configure "sieve" "$INBOX_PATH.sieve/sieve" "$DOVECOT_SIEVE_CONF" "Set sieve=$INBOX_PATH.sieve/sieve"
 
+#echo "Setting mail directory"
+#mkdir -p ./dovecot/mail/
+#chmod -R oug+rw ./dovecot/mail/
+
+echo "Setting cron"
+chown root /etc/crontab
+chmod 644 /etc/crontab
 
 supervisord

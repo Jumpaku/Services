@@ -6,7 +6,8 @@ RUN apk --update add openldap openldap-back-mdb openldap-clients
 
 RUN mkdir -p /run/openldap && mkdir -p /etc/openldap/slapd.d && mkdir -p /var/lib/openldap/openldap-data
 
-COPY ./slapd.conf /home/openldap
-COPY ./configure.sh /home/openldap
-RUN chmod +x configure.sh
-CMD [ "./configure.sh" ]
+COPY ./data/slapd.conf /home/openldap
+COPY ./data/init.sh /home/openldap
+RUN chmod +x init.sh
+
+CMD [ "./init.sh" ]
