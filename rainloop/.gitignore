@@ -1,1 +1,11 @@
-rainloop/data/*
+rainloop_data/*
+!rainloop_data/_data_/
+rainloop_data/_data_/*
+!rainloop_data/_data_/_default_/
+rainloop_data/_data_/_default_/*
+!rainloop_data/_data_/_default_/configs/
+rainloop_data/_data_/_default_/configs/*
+!rainloop_data/_data_/_default_/configs/application.ini
+!rainloop_data/_data_/_default_/domains/
+rainloop_data/_data_/_default_/domains/*
+!rainloop_data/_data_/_default_/domains/jumpaku.net.ini

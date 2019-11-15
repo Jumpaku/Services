@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+  gitea:
+    container_name: 'gitea'
+    image: 'gitea/gitea:1.10'
+    depends_on: 
+      - 'gitea_postgres'
+    environment:
+      - "USER_UID=1000"
+      - "USER_GID=1000"
+      - "GITEA_ADMIN=gitea_admin"
+      - "GITEA_ADMIN_PASSWORD=${GITEA_PASSWORD}"
+      - "DISABLE_SSH=true"
+      - "HTTP_PORT=3000"
+      - "APP_DOMAIN=gitea.jumpaku.net"
+      - "DB_TYPE=postgres"
+      - "DB_HOST=gitea_postgres:5432"
+      - "DB_NAME=gitea"
+      - "DB_USER=gitea"
+      - "DB_PASSWD=${GITEA_POSTGRES_PASSWORD}"
+      - "LDAP_BIND_DN=cn=app,dc=jumpaku,dc=net"
+      - "LDAP_BIND_PASSWORD=${LDAP_APP_PASSWORD}"
+      - "LDAP_USER_SEARCH_BASE=${ou=users,dc=jumpaku,dc=net}"
+    #restart: always
+    networks:
+      - 'db_network'
+      - 'ldap_network'
+      - 'reverse_proxy_network'
+    volumes:
+      - './gitea_data/:/data/'
+      - './init-data/:/init-data'
+
+  gitea_postgres:
+    image: 'postgres:11.5-alpine'
+    container_name: 'gitea_postgres'
+    # restart: always
+    environment:
+      - "POSTGRES_DB=gitea"
+      - "POSTGRES_USER=gitea"
+      - "POSTGRES_PASSWORD=${GITEA_POSTGRES_PASSWORD}"
+    volumes:
+      - './gitea_postgres_data/:/var/lib/postgresql/data/'
+    networks:
+      - 'db_network'
+
+networks: 
+  ldap_network:
+    external: true
+  reverse_proxy_network:
+    external: true
+  db_network:
