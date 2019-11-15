@@ -42,7 +42,7 @@ sudo -E docker-compose run ldap-client modify < users.ldif
 ### hash
 
 ```sh
-echo -n "app_password" | sudo -E docker-compose run ldap-client hash
+echo -n "app_password" | docker-compose run ldap-client hash
 ```
 
 ### ash
@@ -75,4 +75,7 @@ ldapsearch -LLL -x -h openldap -D "uid=testuser,ou=users,dc=jumpaku,dc=net" -w u
 ldapsearch -LLL -x -h openldap -D "uid=testuser,ou=users,dc=jumpaku,dc=net" -w user_password -b "uid=jumpaku,ou=users,dc=jumpaku,dc=net" "(objectClass=*)"
 # As anonymous
 ldapsearch -LLL -x -h openldap -b "dc=jumpaku,dc=net" "(objectClass=*)"
+
+# TLS
+ldapsearch -LLL -x -h ldaps.jumpaku.net -p 636 -Z -D "cn=app,dc=jumpaku,dc=net" -w app_password -b "uid=testuser,ou=users,dc=jumpaku,dc=net" "(objectClass=*)"
 ```

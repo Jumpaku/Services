@@ -33,19 +33,16 @@ QUIT
 export LDAP_APP_PASSWORD=app_password
 ```
 
-# Rainloop
-
 ## Start
 
 ```sh
-sudo docker-compose up -d
+sudo -E ./start.sh
 ```
 
-
-Run servises:
+## Initialize
 
 ```sh
-sudo docker-compose up --build -d
+sudo -E ./initialize.sh
 ```
 
 ## DNS
