@@ -3,30 +3,20 @@ version: '3'
 services: 
 
   reverse_proxy:
-    image: steveltn/https-portal:1
-    container_name: reverse_proxy
+    image: 'steveltn/https-portal:1'
+    container_name: 'reverse_proxy'
     ports:
       - '80:80'
       - '443:443'
     volumes:
-      - ./certs/:/var/lib/https-portal/
+      - './certs/:/var/lib/https-portal/'
     networks:
-      - reverse_proxy_network
+      - 'reverse_proxy_network'
     # restart: always
-    environment:
-      - "CLIENT_MAX_BODY_SIZE=512M"
-      - "DOMAINS=${REVERSE_PROXY_DOMAINS}"
-      - "STAGE=${REVERSE_PROXY_STAGE}"
+    env_file: 
+      - 'reverse_proxy.env'
     depends_on: 
-      - reverse_proxy_test
-
-  reverse_proxy_test:
-    image: nginx:alpine
-    container_name: reverse_proxy_test
-    volumes: 
-      - ./test:/usr/share/nginx/html:ro
-    networks: 
-      - reverse_proxy_network
+      - 'reverse_proxy_test'
 
 networks:
   reverse_proxy_network:
