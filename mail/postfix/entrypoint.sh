@@ -50,8 +50,8 @@ ConfigureWS "Domain" "$DOMAIN" "$OPENDKIM_CONF" "Set Domain $DOMAIN"
 ConfigureWS "Selector" "$DKIM_SELECTOR" "$OPENDKIM_CONF" "Set Selector $DKIM_SELECTOR, DKIM_SELECTOR: Required"
 ConfigureWS "KeyFile" "$DKIM_KEY_PATH" "$OPENDKIM_CONF" "Set KeyFile $DKIM_KEY_PATH, DKIM_KEY_PATH: Required"
 
-echo "Generate DKIM key of $DKIM_SELECTOR if there is no DKIM key in $DKIM_KEY_PATH"
 if [ ! -f $DKIM_KEY_PATH ]; then
+    echo "Generate DKIM key of $DKIM_SELECTOR because there is no DKIM key in $DKIM_KEY_PATH."
 	opendkim-genkey -d $DOMAIN -b 2048 -s $DKIM_SELECTOR
 	mv $DKIM_SELECTOR.private $DKIM_KEY_PATH
 	chmod 400 $DKIM_KEY_PATH
