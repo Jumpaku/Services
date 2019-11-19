@@ -17,7 +17,7 @@ if [ "$1" = "certs" ]; then
         STAGE="local"
     fi
 else
-    DOMAINS=`cat | xargs printf "%s, "`
+    DOMAINS=`cat | python -c "import sys; print (', '.join([l.rstrip('\r\n') for l in sys.stdin.readlines()]))"`
     if [ "$1" = "production" -o "$1" = "staging" ]; then
         STAGE="$1"
     else
