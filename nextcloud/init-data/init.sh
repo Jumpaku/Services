@@ -5,6 +5,8 @@ php occ app:enable user_ldap
 php occ config:system:set trusted_domains 0 --value=localhost
 php occ config:system:set trusted_domains 1 --value=nextcloud
 php occ config:system:set trusted_domains 2 --value="$NEXTCLOUD_DOMAIN"
+php occ config:system:set overwritehost --value="$NEXTCLOUD_DOMAIN"
+php occ config:system:set overwriteprotocol --value=https
 
 CONFIG_ID="s01"
 php occ ldap:delete-config "$CONFIG_ID"

@@ -8,33 +8,36 @@ sudo docker network create reverse_proxy_network
 
 All serveces proxied are stared.
 
-## Test
-
-### Staging
+## Only prepare certs
 
 ```sh
-cd reverse_proxy
-export REVERSE_PROXY_STAGE=staging
-sudo -E docker-compose up -d
-curl -k https://test.jumpaku.net
+# sudo -E ./start.sh certs local < domains.txt
+# sudo -E ./start.sh certs staging < domains.txt
+sudo -E ./start.sh certs production < domains.txt
 ```
+
+## Start reverse proxy
+
+```sh
+# sudo -E ./start.sh local < domains.txt
+# sudo -E ./start.sh staging < domains.txt
+sudo -E ./start.sh production < domains.txt
+```
+
+## Test
 
 ### local
 
 ```sh
-cd reverse_proxy
-export REVERSE_PROXY_DOMAINS='test.jumpaku.net -> http://reverse_proxy_test:80'
-export REVERSE_PROXY_STAGE='local'
 sudo -E docker-compose up -d
 curl -k -H 'Host: test.jumpaku.net' https://localhost
 ```
 
-## Start
+### Staging
 
 ```sh
-cd reverse_proxy
-export REVERSE_PROXY_STAGE=production
 sudo -E docker-compose up -d
+curl -k https://test.jumpaku.net
 ```
 
 ## References

@@ -11,7 +11,7 @@ services:
       - 'LDAP_HOSTS=openldap'
       - 'LDAP_BASE=ou=users,dc=jumpaku,dc=net'
       - 'LDAP_BIND_DN=cn=app,dc=jumpaku,dc=net'
-      - 'LDAP_BIND_PW=$LDAP_APP_PASSWORD'
+      - 'LDAP_BIND_PW=${LDAP_APP_PASSWORD}'
       - 'DOMAIN=jumpaku.net'
       - 'HOSTNAME=smtps.jumpaku.net'
       - 'LMTP_HOST=dovecot'
@@ -36,7 +36,7 @@ services:
       - 'LDAP_HOSTS=openldap'
       - 'LDAP_BASE=ou=users,dc=jumpaku,dc=net'
       - 'LDAP_DN=cn=app,dc=jumpaku,dc=net'
-      - 'LDAP_DNPASS=$LDAP_APP_PASSWORD'
+      - 'LDAP_DNPASS=${LDAP_APP_PASSWORD}'
       - 'SSL_KEY_PATH=/etc/ssl/localcerts/domain.key'
       - 'SSL_CERT_PATH=/etc/ssl/localcerts/signed.crt'
     volumes: 

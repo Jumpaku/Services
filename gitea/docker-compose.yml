@@ -21,7 +21,7 @@ services:
       - "DB_PASSWD=${GITEA_POSTGRES_PASSWORD}"
       - "LDAP_BIND_DN=cn=app,dc=jumpaku,dc=net"
       - "LDAP_BIND_PASSWORD=${LDAP_APP_PASSWORD}"
-      - "LDAP_USER_SEARCH_BASE=${ou=users,dc=jumpaku,dc=net}"
+      - "LDAP_USER_SEARCH_BASE=ou=users,dc=jumpaku,dc=net"
     #restart: always
     networks:
       - 'db_network'

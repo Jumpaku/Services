@@ -1,2 +1,5 @@
 
 *.DS_Store
+reverse_proxy.env
+
+aurora/aurora/
