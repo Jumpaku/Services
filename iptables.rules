@@ -52,5 +52,7 @@
 -A INPUT -p tcp --dport 587  -j ACCEPT
 -A INPUT -p tcp --dport 465   -j ACCEPT
 -A INPUT -p tcp --dport 993   -j ACCEPT
-
+## jitsi
+# -A INPUT -p udp --dport 10000   -j ACCEPT
+# -A INPUT -p tcp --dport 4443   -j ACCEPT
 COMMIT
