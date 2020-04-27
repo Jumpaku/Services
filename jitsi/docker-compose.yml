@@ -2,7 +2,7 @@ version: '3'
 
 services:
     # Frontend
-    web:
+    jitsi-web:
         image: jitsi/web
         restart: ${RESTART_POLICY}
         #ports:
@@ -42,9 +42,10 @@ services:
             meet.jitsi:
                 aliases:
                     - ${XMPP_DOMAIN}
+            reverse_proxy_network:
 
     # XMPP server
-    prosody:
+    jitsi-prosody:
         image: jitsi/prosody
         restart: ${RESTART_POLICY}
         expose:
@@ -109,7 +110,7 @@ services:
                     - ${XMPP_SERVER}
 
     # Focus component
-    jicofo:
+    jitsi-jicofo:
         image: jitsi/jicofo
         restart: ${RESTART_POLICY}
         volumes:
@@ -131,12 +132,12 @@ services:
             - JIBRI_PENDING_TIMEOUT
             - TZ
         depends_on:
-            - prosody
+            - jitsi-prosody
         networks:
             meet.jitsi:
 
     # Video bridge
-    jvb:
+    jitsi-jvb:
         image: jitsi/jvb
         restart: ${RESTART_POLICY}
         ports:
@@ -159,10 +160,12 @@ services:
             - JVB_ENABLE_APIS
             - TZ
         depends_on:
-            - prosody
+            - jitsi-prosody
         networks:
             meet.jitsi:
 
 # Custom network so all services can communicate using a FQDN
 networks:
+    reverse_proxy_network:
+        external: true
     meet.jitsi:
