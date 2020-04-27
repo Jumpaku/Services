@@ -2,7 +2,7 @@
 
 # Configures .env.
 
-function generatePassword() {
+function generatePassword {
     openssl rand -hex 16
 }
 
