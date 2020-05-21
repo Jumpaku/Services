@@ -4,7 +4,6 @@ gitea.jumpaku.net -> http://gitea:3000
 nextcloud.jumpaku.net -> http://nextcloud:80
 othello.jumpaku.net -> http://jumpaku-othello:8080
 rainloop.jumpaku.net -> http://rainloop:8888
-aurora.jumpaku.net -> http://web:80
 jitsi-meet.jumpaku.net -> http://jitsi-web:80
 smtps.jumpaku.net
 imaps.jumpaku.net
