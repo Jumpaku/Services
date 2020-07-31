@@ -3,21 +3,22 @@ version: '3'
 services: 
 
   openldap:
-    build: './openldap'
     container_name: 'openldap'
+    build: './openldap'
+    restart: 'always'
     networks: 
       - 'ldap_network'
     environment:
       - "LDAP_ROOT_PW=${LDAP_ROOT_PW}"
       - "LDAP_SUFFIX=dc=jumpaku,dc=net"
-    volumes: 
-      - '../reverse_proxy/certs/ldaps.jumpaku.net/production:/home/openldap/certs/'
-    ports:
-      - '636:636'
+    #volumes: 
+    #  - '../reverse_proxy/certs/ldaps.jumpaku.net/production:/home/openldap/certs/'
+    #ports:
+    #  - '636:636'
 
   ldap-client:
-    build: './ldap-client'
     container_name: 'ldap-client'
+    build: './ldap-client'
     environment: 
       - "LDAP_ROOT_PW=${LDAP_ROOT_PW}"
       - "LDAP_SUFFIX=dc=jumpaku,dc=net"
