@@ -13,9 +13,9 @@ sed -i "s/^rootdn.*$/rootdn\t\t${LDAP_ROOT_DN}/" ${SLAPD_CONF}
 sed -i "s|^rootpw.*$|rootpw\t\t${HASHED_LDAP_ROOT_PW}|" ${SLAPD_CONF}
 
 CERTS_DIR=/home/openldap/certs
-sed -i "s|^TLSCACertificateFile.*$|TLSCACertificateFile\t${CERTS_DIR}/signed.crt|" ${SLAPD_CONF}
-sed -i "s|^TLSCertificateFile.*$|TLSCertificateFile\t${CERTS_DIR}/signed.crt|" ${SLAPD_CONF}
-sed -i "s|^TLSCertificateKeyFile.*$|TLSCertificateKeyFile\t${CERTS_DIR}/domain.key|" ${SLAPD_CONF}
+#sed -i "s|^TLSCACertificateFile.*$|TLSCACertificateFile\t${CERTS_DIR}/signed.crt|" ${SLAPD_CONF}
+#sed -i "s|^TLSCertificateFile.*$|TLSCertificateFile\t${CERTS_DIR}/signed.crt|" ${SLAPD_CONF}
+#sed -i "s|^TLSCertificateKeyFile.*$|TLSCertificateKeyFile\t${CERTS_DIR}/domain.key|" ${SLAPD_CONF}
 
 #echo "access to attr=userPassword" by * auth" >> ${SLAPD_CONF}
 echo "" >> ${SLAPD_CONF}
@@ -29,4 +29,5 @@ echo "    by * none" >> ${SLAPD_CONF}
 
 slaptest -u -f ${SLAPD_CONF}
 
-slapd -h 'ldap:/// ldaps:///' -d 256
+slapd -h 'ldap:///' -d 256
+#slapd -h 'ldap:/// ldaps:///' -d 256

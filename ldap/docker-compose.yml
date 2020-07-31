@@ -11,7 +11,8 @@ services:
     environment:
       - "LDAP_ROOT_PW=${LDAP_ROOT_PW}"
       - "LDAP_SUFFIX=dc=jumpaku,dc=net"
-    #volumes: 
+    volumes:
+      - './tmp/:/home/openldap/tmp/' 
     #  - '../reverse_proxy/certs/ldaps.jumpaku.net/production:/home/openldap/certs/'
     #ports:
     #  - '636:636'
