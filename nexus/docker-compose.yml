@@ -2,8 +2,9 @@ version: '3'
 
 services: 
   nexus:
-    image: 'sonatype/nexus3:3.22.1'
     container_name: 'nexus'
+    image: 'sonatype/nexus3:3.25.0'
+    restart: 'always'
     volumes: 
       - './nexus-data:/nexus-data'
       - './nexus-backup:/nexus-backup'

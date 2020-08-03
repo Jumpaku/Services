@@ -1,11 +1,5 @@
 # nexus
 
-# Start
-
-```sh
-sudo -E ./start.sh
-```
-
 # Initialize
 
 ```sh
