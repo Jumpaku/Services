@@ -1,1 +1,3 @@
 users.ldif
+db/*
+conf/*

@@ -9,7 +9,7 @@ services:
     networks: 
       - 'ldap_network'
     environment:
-      - "ROOT_DN_PW=${ROOT_DN_PW}"
+      - "ROOT_DN_PW=${LDAP_ROOT_DN_PW}"
       - "ROOT_DN=cn=admin,dc=jumpaku,dc=net"
       - "SUFFIX=dc=jumpaku,dc=net"
       #- "LDAP_URIS="
@@ -27,7 +27,7 @@ services:
   #  container_name: 'ldap-client'
   #  image: 'jumpaku/ldap-docker:release-v1.1.2'
   #  environment: 
-  #    - "BIND_DN_PW=${ROOT_DN_PW}"
+  #    - "BIND_DN_PW=${LDAP_ROOT_DN_PW}"
   #    - "BIND_DN=cn=admin,dc=jumpaku,dc=net"
   #    - "BASE_DN=dc=jumpaku,dc=net"
   #    - "LDAP_SERVER_URI=ldap://openldap/"
