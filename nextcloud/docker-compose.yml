@@ -3,8 +3,9 @@ version: '3'
 services:
 
   nextcloud:
-    image: 'nextcloud:17'
     container_name: 'nextcloud'
+    image: 'nextcloud:17'
+    restart: 'always'
     depends_on:
       - 'nextcloud_mariadb'
     volumes:
@@ -14,7 +15,6 @@ services:
       - 'db_network'
       - 'reverse_proxy_network'
       - 'ldap_network'
-    # restart: always
     environment: 
       - 'NEXTCLOUD_DOMAIN=nextcloud.jumpaku.net'
       - 'NEXTCLOUD_ADMIN_USER=nextcloud_admin'
@@ -28,8 +28,9 @@ services:
       - 'MYSQL_HOST=nextcloud_mariadb'
 
   nextcloud_mariadb:
-    image: 'mariadb'
     container_name: 'nextcloud_mariadb'
+    image: 'mariadb:10.5.4'
+    restart: 'always'
     volumes:
       - './nextcloud_mariadb_data/:/var/lib/mysql'
     networks:
