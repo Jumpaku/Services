@@ -4,27 +4,35 @@ services:
 
   openldap:
     container_name: 'openldap'
-    build: './openldap'
+    image: 'jumpaku/ldap-docker:release-v1.1.2'
     restart: 'always'
     networks: 
       - 'ldap_network'
     environment:
-      - "LDAP_ROOT_PW=${LDAP_ROOT_PW}"
-      - "LDAP_SUFFIX=dc=jumpaku,dc=net"
+      - "ROOT_DN_PW=${ROOT_DN_PW}"
+      - "ROOT_DN=cn=admin,dc=jumpaku,dc=net"
+      - "SUFFIX=dc=jumpaku,dc=net"
+      #- "LDAP_URIS="
+      #- "LDAPS_URIS=ldaps://ldap/"
+      #- "CERT=/certificates/cert.pem"
+      #- "PRIVKEY=/certificates/privkey.pem"
     volumes:
-      - './tmp/:/home/openldap/tmp/' 
-    #  - '../reverse_proxy/certs/ldaps.jumpaku.net/production:/home/openldap/certs/'
+      - './db/:/var/lib/openldap/openldap-data' 
+      - './conf/:/etc/openldap' 
+      - './../reverse_proxy/certs/ldaps.jumpaku.net/production:/certificates/'
     #ports:
     #  - '636:636'
 
-  ldap-client:
-    container_name: 'ldap-client'
-    build: './ldap-client'
-    environment: 
-      - "LDAP_ROOT_PW=${LDAP_ROOT_PW}"
-      - "LDAP_SUFFIX=dc=jumpaku,dc=net"
-    networks: 
-      - 'ldap_network'
+  #ldap-client:
+  #  container_name: 'ldap-client'
+  #  image: 'jumpaku/ldap-docker:release-v1.1.2'
+  #  environment: 
+  #    - "BIND_DN_PW=${ROOT_DN_PW}"
+  #    - "BIND_DN=cn=admin,dc=jumpaku,dc=net"
+  #    - "BASE_DN=dc=jumpaku,dc=net"
+  #    - "LDAP_SERVER_URI=ldap://openldap/"
+  #  networks: 
+  #    - 'ldap_network'
 
 networks:
   ldap_network:
