@@ -4,7 +4,7 @@ services:
 
   reverse_proxy:
     container_name: 'reverse_proxy'
-    image: 'jumpaku/nginx-letsencrypt-reverse-proxy:release-v1.0.1'
+    image: 'jumpaku/nginx-letsencrypt-reverse-proxy:release-v1.1.0'
     restart: 'always'
     ports:
       - '80:80'
