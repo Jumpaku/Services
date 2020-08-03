@@ -3,52 +3,20 @@
 ## Prerequisite
 
 ```sh
-export LDAP_ROOT_PW=secret_password
+export LDAP_ROOT_DN_PW=secret_password
 sudo -E docker network create ldap_network
 ```
 
 ## Start
 
 ```sh
-sudo -E ./start.sh
+sudo -E docker-compose up -d
 ```
 
 ## Initialize
 
 ```sh
-sudo -E ./initialize.sh
-```
-
-## Client Commands
-
-### init
-
-```sh
-sudo -E docker-compose run ldap-client init
-```
-
-### display
-
-```
-sudo -E docker-compose run ldap-client display
-```
-
-### modify
-
-```sh
-sudo -E docker-compose run ldap-client modify < users.ldif
-```
-
-### hash
-
-```sh
-echo -n "app_password" | docker-compose run ldap-client hash
-```
-
-### ash
-
-```sh
-sudo docker-compose run ldap-client ash
+sudo -E docker-compose exec openldap slapadd < users.ldif
 ```
 
 ## Test
@@ -56,9 +24,10 @@ sudo docker-compose run ldap-client ash
 ### Users
 
 ```sh
-sudo -E docker-compose -f run ldap-client display
+sudo -E docker-compose exec openldap slapcat
 ``` 
 
+<!--
 ### Accesses (ldapsearch)
 
 ```sh
@@ -79,3 +48,4 @@ ldapsearch -LLL -x -h openldap -b "dc=jumpaku,dc=net" "(objectClass=*)"
 # TLS
 ldapsearch -LLL -x -h ldaps.jumpaku.net -p 636 -Z -D "cn=app,dc=jumpaku,dc=net" -w app_password -b "uid=testuser,ou=users,dc=jumpaku,dc=net" "(objectClass=*)"
 ```
+-->

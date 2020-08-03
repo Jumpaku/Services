@@ -19,7 +19,7 @@ services:
     volumes:
       - './db/:/var/lib/openldap/openldap-data' 
       - './conf/:/etc/openldap' 
-      - './../reverse_proxy/certs/ldaps.jumpaku.net/production:/certificates/'
+      #- './../reverse_proxy/certs/ldaps.jumpaku.net/production:/certificates/'
     #ports:
     #  - '636:636'
 
