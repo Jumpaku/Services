@@ -27,6 +27,22 @@ sudo -E docker-compose exec openldap slapadd < users.ldif
 sudo -E docker-compose exec openldap slapcat
 ``` 
 
+### Access (ldapsearch)
+
+```sh
+sudo -E docker run -it \
+    -e BIND_DN_PW=${LDAP_ROOT_DN_PW} \
+    -e BIND_DN=cn=admin,dc=jumpaku,dc=net \
+    -e BASE_DN=dc=jumpaku,dc=net \
+    -e LDAP_SERVER_URI=ldap://openldap/ \
+    --network ldap_network \
+    jumpaku/ldap-docker ash
+``` 
+
+```sh
+ldapsearch -x -H "${LDAP_SERVER_URI}" -D "${BIND_DN}" -w "${BIND_DN_PW}" -b "${BASE_DN}" "(objectClass=*)"
+```
+
 <!--
 ### Accesses (ldapsearch)
 
