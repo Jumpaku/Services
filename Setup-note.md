@@ -63,3 +63,9 @@ MAX_FILES = 1000
 ### nextcloud
 
 Disable Versions app from admin panel.
+
+
+# Sakura no VPS partition extension after increasing strage capacity
+
+Not creation of new pertition according to https://vps-news.sakura.ad.jp/disk-expansion_ubuntu18_04/ but extension of existing partition according to https://onoredekaiketsu.com/extend-partition-after-increasing-storage-capacity-with-sakura-vps/ .
+

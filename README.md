@@ -14,7 +14,7 @@
 
 ## Internal LDAP
 
-* openldap
+* ldap
 
 ## Mail server
 
