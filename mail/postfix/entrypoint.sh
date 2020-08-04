@@ -63,7 +63,6 @@ cat $DKIM_KEY_PATH.txt
 
 echo "Setting cron"
 echo '0 4 * * sat root postfix reload' >> /etc/crontab
-echo '* * * * * root postfix reload' >> /etc/crontab
 
 echo "Adding host configurations into postfix jail"
 rm -rf /var/spool/postfix/etc
