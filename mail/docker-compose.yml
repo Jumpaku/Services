@@ -18,11 +18,11 @@ services:
       - 'LMTP_HOST=dovecot'
       - 'DKIM_SELECTOR=default'
       - 'DKIM_KEY_PATH=/etc/dkimkeys/default.private'
-      - 'SSL_KEY_PATH=/etc/ssl/localcerts/domain.key'
-      - 'SSL_CERT_PATH=/etc/ssl/localcerts/signed.crt'
+      - 'SSL_KEY_PATH=/etc/ssl/localcerts/privkey.pem'
+      - 'SSL_CERT_PATH=/etc/ssl/localcerts/fullchain.pem'
     volumes: 
       - './postfix/dkimkeys/:/etc/dkimkeys/'
-      - '../reverse_proxy/certs/smtps.jumpaku.net/production/:/etc/ssl/localcerts/:ro'
+      - '../reverse_proxy/certs/production/smtps.jumpaku.net/:/etc/ssl/localcerts/:ro'
     ports: 
       - '25:25'
       - '587:587'
@@ -39,8 +39,8 @@ services:
       - 'LDAP_BASE=ou=users,dc=jumpaku,dc=net'
       - 'LDAP_DN=cn=app,dc=jumpaku,dc=net'
       - 'LDAP_DNPASS=${LDAP_APP_PASSWORD}'
-      - 'SSL_KEY_PATH=/etc/ssl/localcerts/domain.key'
-      - 'SSL_CERT_PATH=/etc/ssl/localcerts/signed.crt'
+      - 'SSL_KEY_PATH=/etc/ssl/localcerts/privkey.pem'
+      - 'SSL_CERT_PATH=/etc/ssl/localcerts/fullchain.pem'
     volumes: 
       - '../reverse_proxy/certs/production/imaps.jumpaku.net/:/etc/ssl/localcerts/:ro'
       - './dovecot/mail/:/var/mail/'
