@@ -5,6 +5,7 @@ services:
   postfix:
     container_name: 'postfix'
     build: './postfix'
+    restart: 'always'
     networks: 
       - 'ldap_network'
     environment: 
@@ -30,6 +31,7 @@ services:
   dovecot:
     container_name: 'dovecot'
     build: './dovecot'
+    restart: 'always'
     networks: 
       - 'ldap_network'
     environment: 
