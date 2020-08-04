@@ -4,7 +4,7 @@ services:
 
   reverse_proxy:
     container_name: 'reverse_proxy'
-    image: 'jumpaku/nginx-letsencrypt-reverse-proxy:release-v1.1.0'
+    image: 'jumpaku/nginx-letsencrypt-reverse-proxy:release-v1.2.0'
     restart: 'always'
     ports:
       - '80:80'
@@ -25,6 +25,7 @@ services:
         rainloop.jumpaku.net -> http://rainloop:8888, \
         smtps.jumpaku.net, \
         imaps.jumpaku.net"
+      - "CLIENT_MAX_BODY_SIZE=1G"
 
 networks:
   reverse_proxy_network:
