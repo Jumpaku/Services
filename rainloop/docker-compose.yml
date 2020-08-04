@@ -2,8 +2,9 @@ version: '3'
 
 services: 
   rainloop:
-    image: 'hardware/rainloop'
     container_name: 'rainloop'
+    image: 'hardware/rainloop:1.13.0'
+    restart: 'always'
     volumes:
       - './rainloop_data/:/rainloop/data'
     environment: 

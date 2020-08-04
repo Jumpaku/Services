@@ -3,7 +3,8 @@ version: '3'
 services:
   gitea:
     container_name: 'gitea'
-    image: 'gitea/gitea:1.10'
+    image: 'gitea/gitea:1.12.2'
+    restart: 'always'
     depends_on: 
       - 'gitea_postgres'
     environment:
@@ -22,7 +23,7 @@ services:
       - "LDAP_BIND_DN=cn=app,dc=jumpaku,dc=net"
       - "LDAP_BIND_PASSWORD=${LDAP_APP_PASSWORD}"
       - "LDAP_USER_SEARCH_BASE=ou=users,dc=jumpaku,dc=net"
-    #restart: always
+    restart: always
     networks:
       - 'db_network'
       - 'ldap_network'
@@ -34,7 +35,7 @@ services:
   gitea_postgres:
     image: 'postgres:11.5-alpine'
     container_name: 'gitea_postgres'
-    # restart: always
+    restart: always
     environment:
       - "POSTGRES_DB=gitea"
       - "POSTGRES_USER=gitea"

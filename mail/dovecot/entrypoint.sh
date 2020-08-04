@@ -33,12 +33,11 @@ Configure "mail_location" "maildir:$INBOX_PATH" "$DOVECOT_MAIL_CONF" "Set mail_l
 Configure "sieve_dir" "$INBOX_PATH.sieve" "$DOVECOT_SIEVE_CONF" "Set sieve_dir=$INBOX_PATH.sieve"
 Configure "sieve" "$INBOX_PATH.sieve/sieve" "$DOVECOT_SIEVE_CONF" "Set sieve=$INBOX_PATH.sieve/sieve"
 
-#echo "Setting mail directory"
-#mkdir -p ./dovecot/mail/
-#chmod -R oug+rw ./dovecot/mail/
-
 echo "Setting cron"
-chown root /etc/crontab
-chmod 644 /etc/crontab
+echo '0  4  *  *  sat root dovecot reload && echo "$(date) cron: dovecot reload" > /proc/$(cat /var/run/dovecot/master.pid)/fd/1 2>&1' >> /etc/crontab
 
-supervisord
+echo "Start cron"
+cron
+
+echo "Start dovecot"
+dovecot -F
