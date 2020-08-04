@@ -42,7 +42,7 @@ services:
       - 'SSL_KEY_PATH=/etc/ssl/localcerts/domain.key'
       - 'SSL_CERT_PATH=/etc/ssl/localcerts/signed.crt'
     volumes: 
-      - '../reverse_proxy/certs/imaps.jumpaku.net/production/:/etc/ssl/localcerts/:ro'
+      - '../reverse_proxy/certs/production/imaps.jumpaku.net/:/etc/ssl/localcerts/:ro'
       - './dovecot/mail/:/var/mail/'
     ports: 
       - '993:993'
