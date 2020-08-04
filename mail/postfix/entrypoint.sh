@@ -35,6 +35,7 @@ ConfigureEq "virtual_transport" "$LMTP_TRANSPORT" "$POSTFIX_MAIN_CF" "Set virtua
 ConfigureEq "smtpd_tls_key_file" "$SSL_KEY_PATH" "$POSTFIX_MAIN_CF" "Set smtpd_tls_key_file=$SSL_KEY_PATH, SSL_KEY_PATH Required"
 ConfigureEq "smtpd_tls_cert_file" "$SSL_CERT_PATH" "$POSTFIX_MAIN_CF" "Set smtpd_tls_cert_file=$SSL_CERT_PATH, SSL_CERT_PATH Required"
 
+
 function ConfigureWS {
     KEY="$1"
     VALUE="$2"
@@ -61,8 +62,8 @@ echo "DKIM Record of $DKIM_SELECTOR (cat $DKIM_KEY_PATH.txt)"
 cat $DKIM_KEY_PATH.txt
 
 echo "Setting cron"
-chown root /etc/crontab
-chmod 644 /etc/crontab
+echo '0 4 * * sat root postfix reload' >> /etc/crontab
+echo '* * * * * root postfix reload' >> /etc/crontab
 
 echo "Adding host configurations into postfix jail"
 rm -rf /var/spool/postfix/etc
@@ -79,5 +80,5 @@ service rsyslog start
 service saslauthd start
 service opendkim start
 service cron start
-postfix start
-tail -F /var/log/mail.log
+
+postfix start-fg
