@@ -22,6 +22,7 @@ services:
         gitea.jumpaku.net -> http://gitea:3000, \
         nextcloud.jumpaku.net -> http://nextcloud:80, \
         othello.jumpaku.net -> http://jumpaku-othello:8080, \
+        dinner.jumpaku.net -> http://jumpaku-dinner:80, \
         rainloop.jumpaku.net -> http://rainloop:8888, \
         smtps.jumpaku.net, \
         imaps.jumpaku.net"
