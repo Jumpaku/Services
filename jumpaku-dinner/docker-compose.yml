@@ -1,0 +1,16 @@
+version: '3'
+
+services: 
+
+  jumpaku-dinner:
+    container_name: 'jumpaku-dinner'
+    image: 'jumpaku/jumpaku-dinner:release-v1.0.1'
+    restart: 'always'
+    networks:
+        - reverse_proxy_network
+    environment: 
+        - 'SERVER_NAME=dinner.jumpaku.net'
+
+networks:
+  reverse_proxy_network:
+    external: true
