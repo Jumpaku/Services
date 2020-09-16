@@ -4,7 +4,7 @@ services:
 
   nextcloud:
     container_name: 'nextcloud'
-    image: 'nextcloud:17'
+    image: 'nextcloud:19.0.3'
     restart: 'always'
     depends_on:
       - 'nextcloud_mariadb'
