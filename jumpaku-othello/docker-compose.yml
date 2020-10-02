@@ -4,7 +4,7 @@ services:
 
   jumpaku-othello:
     container_name: 'jumpaku-othello'
-    image: 'jumpaku/jumpaku-othello'
+    image: 'jumpaku/jumpaku-othello:version-1.2'
     restart: 'always'
     networks:
       - reverse_proxy_network
