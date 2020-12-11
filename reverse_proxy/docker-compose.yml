@@ -18,6 +18,7 @@ services:
       - "STAGE=production"
       - "DOMAINS=\
         test.jumpaku.net, \
+        gunosy_challenge_3.jumpaku.net -> http://gunosy_challenge_3:8080, \
         nexus.jumpaku.net -> http://nexus:8081, \
         gitea.jumpaku.net -> http://gitea:3000, \
         nextcloud.jumpaku.net -> http://nextcloud:80, \
