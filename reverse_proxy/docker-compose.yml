@@ -26,7 +26,7 @@ services:
         rainloop.jumpaku.net -> http://rainloop:8888, \
         smtps.jumpaku.net, \
         imaps.jumpaku.net, \
-        unity1week-2209-dev.jumpaku.net"
+        unity1week-2209-dev.jumpaku.net -> http://unity1week-2209-server"
       - "CLIENT_MAX_BODY_SIZE=1G"
 
 networks:
