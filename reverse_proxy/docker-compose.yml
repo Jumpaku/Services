@@ -27,7 +27,7 @@ services:
         smtps.jumpaku.net, \
         imaps.jumpaku.net, \
         unity1week-2209-dev.jumpaku.net -> http://unity1week-2209-server, \
-        contest.jumpaku.net -> http://oj-backend"
+        contest.jumpaku.net -> http://oj-backend:8000"
       - "CLIENT_MAX_BODY_SIZE=1G"
 
 networks:
