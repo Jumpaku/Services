@@ -25,12 +25,20 @@ sudo iptables -L
 * PermitRootLogin yes -> PermitRootLogin no 
 * PasswordAuthentication yes -> PasswordAuthentication no
 
-3. Restart ssh  
-`sudo /etc/init.d/ssh restart`
+3. Restart ssh
+```sh
+sudo /etc/init.d/ssh restart
+```
 
 ## docker
 
 install docker and docker-compose
+
+## Time
+
+```sh
+sudo date --set='2023-01-16T00:40:00+09:00' "+%Y-%m-%dT%H:%M:%S%:z"
+```
 
 ## Reverse proxy with Let's Encript
 
